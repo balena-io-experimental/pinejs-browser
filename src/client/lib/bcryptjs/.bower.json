@@ -1,0 +1,39 @@
+{
+  "name": "bcryptjs",
+  "description": "Optimized bcrypt in plain JavaScript with zero dependencies.",
+  "version": "2.4.3",
+  "main": "dist/bcrypt.min.js",
+  "license": "New-BSD",
+  "homepage": "http://dcode.io/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dcodeIO/bcrypt.js.git"
+  },
+  "keywords": [
+    "bcrypt",
+    "password",
+    "auth",
+    "authentication",
+    "encryption",
+    "crypt",
+    "crypto"
+  ],
+  "dependencies": {},
+  "devDependencies": {},
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "2.4.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.4.3",
+    "commit": "f7dd725a0b77036696042b5c1cb5e13cf0f7291e"
+  },
+  "_source": "https://github.com/dcodeIO/bcrypt.js.git",
+  "_target": "^2.4.0",
+  "_originalSource": "bcryptjs"
+}
