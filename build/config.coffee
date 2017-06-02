@@ -22,7 +22,6 @@ module.exports =
 			'pg': 'null-loader'
 
 			'bcrypt': 'bcryptjs'
-			'express': root + '/src/express'
 			'underscore': 'lodash'
 
 			'bootstrap': 'bootstrap/docs/assets/js/bootstrap'
