@@ -46,6 +46,8 @@ module.exports =
 			'extended-sbvr-parser': root + '/src/common/extended-sbvr-parser'
 			'server-glue': root + '/src/pine/pine.js'
 
+			'express': root + '/src/express'
+
 		extensions: [
 			'.js'
 			'.coffee'
