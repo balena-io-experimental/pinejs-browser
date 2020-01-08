@@ -10,11 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@resin/abstract-sql-compiler": "^2.3.3",
-    "@resin/abstract-sql-to-odata-schema": "^1.1.0",
-    "@resin/lf-to-abstract-sql": "0.0.19",
-    "@resin/odata-parser": "^0.2.15",
-    "@resin/odata-to-abstract-sql": "^0.4.1",
     "@resin/sbvr-parser": "0.0.26",
     "@resin/sbvr-types": "^1.4.2",
     "bluebird": "^3.7.2",
@@ -22,7 +17,6 @@
     "coffee-script": "^1.12.7",
     "express-session": "^1.17.0",
     "lodash": "^4.17.15",
-    "memoizee": "^0.4.14",
     "ometa-js": "^1.5.3",
     "pinejs-client": "^3.1.0",
     "typed-error": "^0.1.0"
