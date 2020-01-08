@@ -57,6 +57,6 @@
     "umd-require-webpack-plugin": "0.0.1",
     "url-loader": "^0.5.9",
     "webpack": "^2.7.0",
-    "webpack-dev-server": "^2.11.5"
+    "webpack-dev-server": "^3.1.11"
   }
 }
