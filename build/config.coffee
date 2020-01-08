@@ -1,10 +1,10 @@
 path = require 'path'
 webpack = require 'webpack'
-UMDRequirePlugin = require 'umd-require-webpack-plugin'
-ExtractTextPlugin = require 'extract-text-webpack-plugin'
+MiniCssExtractPlugin = require 'mini-css-extract-plugin'
 root = path.join(__dirname + '/..')
 
 module.exports =
+	mode: 'production'
 	devtool: 'source-map'
 	entry: root + '/src/main.js'
 	output:
@@ -53,15 +53,11 @@ module.exports =
 			'.coffee'
 		]
 	plugins: [
-		new UMDRequirePlugin()
 		new webpack.ProvidePlugin(
 			jQuery: 'jquery'
 			'window.jQuery': 'jquery'
 		)
-		new ExtractTextPlugin(
-			filename: 'main.css'
-			allChunks: true
-		)
+		new MiniCssExtractPlugin()
 		new webpack.optimize.LimitChunkCountPlugin(maxChunks: 1)
 	]
 	module:
@@ -75,9 +71,15 @@ module.exports =
 			{ test: /[\/\\]ejs.js/, use: 'exports-loader?ejs' }
 			{ test: /[\/\\]uglify-js.js/, use: 'exports-loader?UglifyJS' }
 
-			{ test: /\.(html|sbvr)$/, use: 'raw-loader' }
+			{ test: /\.(html|sbvr)$/, use: {
+					loader: 'raw-loader',
+					options: {
+						esModule: false
+					},
+				},
+			}
 			{ test: /\.ometa(js)?$/, use: 'ometa-loader' }
-			{ test: /\.css$/, use: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' }) }
+			{ test: /\.css$/, use: [MiniCssExtractPlugin.loader, 'css-loader'] }
 			{ test: /\.png$/, use: 'url-loader?limit=100000&mimetype=image/png' }
 			{ test: /\.jpg$/, use: 'url-loader?limit=100000&mimetype=image/jpg' }
 			{ test: /\.coffee$/, use: 'coffee-loader' }

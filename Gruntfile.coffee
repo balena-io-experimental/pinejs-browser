@@ -1,6 +1,6 @@
 webpack = require 'webpack'
 _ = require 'lodash'
-UglifyJsPlugin = require 'uglifyjs-webpack-plugin'
+TerserPlugin = require 'terser-webpack-plugin'
 
 clientConfigs =
 	'client': require './build/client'
@@ -13,14 +13,18 @@ clientDevConfigs = {}
 for task, config of clientConfigs
 	clientDevConfigs[task] = _.clone(config)
 	clientDevConfigs[task].plugins = _.clone(config.plugins)
-	config.plugins = config.plugins.concat(
-		new webpack.optimize.UglifyJsPlugin(
-			sourceMap: true
-			uglifyOptions:
-				compress:
-					unused: false # We need this off for OMeta
-		)
-	)
+	config.optimization = {
+		minimizer: [
+			new TerserPlugin(
+				cache: true
+				parallel: true
+				sourceMap: true
+				terserOptions:
+					compress:
+						unused: false # We need this off for OMeta
+			)
+		]
+	}
 
 
 module.exports = (grunt) ->
