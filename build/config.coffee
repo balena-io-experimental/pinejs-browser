@@ -11,13 +11,18 @@ module.exports =
 		path: root + '/out'
 		filename: 'main.js'
 	resolve:
-		root: [path.join(root, '/lib')]
+		descriptionFiles: ['package.json', 'bower.json']
+		modules: [
+			path.join(root, '/lib')
+			'node_modules'
+		]
 		alias:
 			'coffee-script/register': 'null-loader'
 			'fs': 'null-loader'
 			'dns': 'null-loader'
 			'module': 'null-loader'
 			'mysql': 'null-loader'
+			'net': 'null-loader'
 			'pg/lib/connection-parameters': 'null-loader'
 			'pg': 'null-loader'
 
@@ -42,40 +47,36 @@ module.exports =
 			'server-glue': root + '/src/pine/pine.js'
 
 		extensions: [
-			''
 			'.js'
 			'.coffee'
 		]
 	plugins: [
 		new UMDRequirePlugin()
-		new webpack.ResolverPlugin(
-			new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('bower.json', ['main'])
-		)
 		new webpack.ProvidePlugin(
 			jQuery: 'jquery'
 			'window.jQuery': 'jquery'
 		)
-		new webpack.optimize.DedupePlugin()
-		new ExtractTextPlugin('main.css',
+		new ExtractTextPlugin(
+			filename: 'main.css'
 			allChunks: true
 		)
 		new webpack.optimize.LimitChunkCountPlugin(maxChunks: 1)
 	]
 	module:
-		loaders: [
-			{ test: /[\/\\]bootstrap.js/, loader: 'imports-loader?__css__=../css/bootstrap.css' }
-			{ test: /[\/\\]show-hint.js/, loader: 'imports-loader?__css__=codemirror/addon/hint/show-hint.css' }
-			{ test: /[\/\\]codemirror.js/, loader: 'imports-loader?__css__=codemirror/lib/codemirror.css' }
-			{ test: /[\/\\]backbone.js/, loader: 'imports-loader?this=>' + encodeURIComponent('{$:require("jquery"), _:require("lodash")}') }
+		rules: [
+			{ test: /[\/\\]bootstrap.js/, use: 'imports-loader?__css__=../css/bootstrap.css' }
+			{ test: /[\/\\]show-hint.js/, use: 'imports-loader?__css__=codemirror/addon/hint/show-hint.css' }
+			{ test: /[\/\\]codemirror.js/, use: 'imports-loader?__css__=codemirror/lib/codemirror.css' }
+			{ test: /[\/\\]backbone.js/, use: 'imports-loader?this=>' + encodeURIComponent('{$:require("jquery"), _:require("lodash")}') }
 
-			{ test: /[\/\\]d3.js/, loader: 'exports-loader?d3' }
-			{ test: /[\/\\]ejs.js/, loader: 'exports-loader?ejs' }
-			{ test: /[\/\\]uglify-js.js/, loader: 'exports-loader?UglifyJS' }
+			{ test: /[\/\\]d3.js/, use: 'exports-loader?d3' }
+			{ test: /[\/\\]ejs.js/, use: 'exports-loader?ejs' }
+			{ test: /[\/\\]uglify-js.js/, use: 'exports-loader?UglifyJS' }
 
-			{ test: /\.(html|sbvr)$/, loader: 'raw-loader' }
-			{ test: /\.ometa(js)?$/, loader: 'ometa-loader' }
-			{ test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader') }
-			{ test: /\.png$/, loader: 'url-loader?limit=100000&mimetype=image/png' }
-			{ test: /\.jpg$/, loader: 'url-loader?limit=100000&mimetype=image/jpg' }
-			{ test: /\.coffee$/, loader: 'coffee-loader' }
+			{ test: /\.(html|sbvr)$/, use: 'raw-loader' }
+			{ test: /\.ometa(js)?$/, use: 'ometa-loader' }
+			{ test: /\.css$/, use: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' }) }
+			{ test: /\.png$/, use: 'url-loader?limit=100000&mimetype=image/png' }
+			{ test: /\.jpg$/, use: 'url-loader?limit=100000&mimetype=image/jpg' }
+			{ test: /\.coffee$/, use: 'coffee-loader' }
 		]

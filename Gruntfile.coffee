@@ -1,5 +1,6 @@
 webpack = require 'webpack'
 _ = require 'lodash'
+UglifyJsPlugin = require 'uglifyjs-webpack-plugin'
 
 clientConfigs =
 	'client': require './build/client'
@@ -14,8 +15,10 @@ for task, config of clientConfigs
 	clientDevConfigs[task].plugins = _.clone(config.plugins)
 	config.plugins = config.plugins.concat(
 		new webpack.optimize.UglifyJsPlugin(
-			compress:
-				unused: false # We need this off for OMeta
+			sourceMap: true
+			uglifyOptions:
+				compress:
+					unused: false # We need this off for OMeta
 		)
 	)
 
@@ -70,7 +73,6 @@ module.exports = (grunt) ->
 		webpack: clientConfigs
 		'webpack-dev-server':
 			_.mapValues clientDevConfigs, (config) ->
-				keepAlive: true
 				contentBase: 'src/'
 				webpack: config
 
