@@ -17,7 +17,7 @@ module.exports =
 			'node_modules'
 		]
 		alias:
-			'coffee-script/register': 'null-loader'
+			'coffeescript/register': 'null-loader'
 			'fs': 'null-loader'
 			'dns': 'null-loader'
 			'module': 'null-loader'
@@ -43,7 +43,6 @@ module.exports =
 			'ometa-highlighting': root + '/src/ometa-highlighting'
 			'server-request': root + '/src/server-request'
 
-			'extended-sbvr-parser': root + '/src/common/extended-sbvr-parser'
 			'server-glue': root + '/src/pine/pine.js'
 
 			'express': root + '/src/express'

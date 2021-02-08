@@ -1,10 +1,10 @@
-define ['config', 'backbone', 'extended-sbvr-parser'], (config, Backbone, SBVRParser) ->
+define ['config', 'backbone', 'server-glue'], (config, Backbone, { ExtendedSBVRParser }) ->
 	Backbone.Model.extend({
 		defaults:
 			id: null
 			content: ''
 		compile: do ->
-			sbvrParser = SBVRParser.createInstance()
+			sbvrParser = ExtendedSBVRParser.createInstance()
 			sbvrParser.enableReusingMemoizations(sbvrParser._sideEffectingRules)
 			return ->
 				sbvrParser.reset()

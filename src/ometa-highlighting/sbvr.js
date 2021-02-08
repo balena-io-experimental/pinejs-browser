@@ -1,3 +1,3 @@
-define(['codemirror-ometa/highlighter', 'extended-sbvr-parser', './sbvr.css'], function(codeMirrorOmetaHighlighter, SBVRParser) {
-	codeMirrorOmetaHighlighter(SBVRParser, 'sbvr', 'text/sbvr', {enableLineByLineParsing: true});
+define(['codemirror-ometa/highlighter', 'server-glue', './sbvr.css'], function(codeMirrorOmetaHighlighter, {ExtendedSBVRParser}) {
+	codeMirrorOmetaHighlighter(ExtendedSBVRParser, 'sbvr', 'text/sbvr', {enableLineByLineParsing: true});
 });
