@@ -1684,7 +1684,7 @@
                             for (;/\s/.test(listyObj.charAt(divergencePoint)); ) divergencePoint--;
                             if (divergencePoint > 0) {
                                 var cleanInput = function(divergencePoint) {
-                                    var secondaryDivergencePoint;
+                                    var secondaryDivergencePoint = 0;
                                     do {
                                         for (var memo = input.memo, memoTokens = input.tokens, ruleNames = Object.keys(memo), i = 0; i < ruleNames.length; i++) {
                                             var ruleName = ruleNames[i];
@@ -1694,9 +1694,9 @@
                                         input.lst = listyObj;
                                     } while (input.idx < divergencePoint && (input = input.tail()));
                                     return secondaryDivergencePoint;
-                                };
-                                if ((divergencePoint = cleanInput(divergencePoint)) > 0) {
-                                    cleanInput(divergencePoint);
+                                }, secondaryDivergencePoint = cleanInput(divergencePoint);
+                                if (secondaryDivergencePoint > 0) {
+                                    secondaryDivergencePoint < divergencePoint && cleanInput(secondaryDivergencePoint);
                                     delete input.tl;
                                     return this.input = this.inputHead;
                                 }
@@ -6918,7 +6918,7 @@
         version: package_json_1.version + "+" + package_json_2.version
     });
 }, function(module) {
-    module.exports = JSON.parse('{"_from":"@balena/sbvr-parser@1.1.1","_id":"@balena/sbvr-parser@1.1.1","_inBundle":false,"_integrity":"sha512-brffVqV2EjP3ZffaaMagTbruAn1diDMnvspHKGHXkP90KqnF/wQoQ08B6HizYhnuk/mpKrCzENN41nI1oXN+Eg==","_location":"/@balena/sbvr-parser","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"@balena/sbvr-parser@1.1.1","name":"@balena/sbvr-parser","escapedName":"@balena%2fsbvr-parser","scope":"@balena","rawSpec":"1.1.1","saveSpec":null,"fetchSpec":"1.1.1"},"_requiredBy":["#USER","/","/@balena/lf-to-abstract-sql"],"_resolved":"https://registry.npmjs.org/@balena/sbvr-parser/-/sbvr-parser-1.1.1.tgz","_shasum":"380343b4c0cbe7fe9c4b806d5c472f8d04ac75b2","_spec":"@balena/sbvr-parser@1.1.1","_where":"C:\\\\Users\\\\pjgaz\\\\Documents\\\\Development\\\\pinejs\\\\pinejs","author":"","bugs":{"url":"https://github.com/balena-io-modules/sbvr-parser/issues"},"bundleDependencies":false,"dependencies":{"lodash":"^4.17.20","ometa-js":"^1.5.3"},"deprecated":false,"description":"SBVR to LF parser.","devDependencies":{"@balena/lint":"^5.2.0","@balena/sbvr-types":"^3.1.0","chai":"^4.1.2","mocha":"^8.1.3","require-npm4-to-publish":"^1.0.0"},"homepage":"https://github.com/balena-io-modules/sbvr-parser#readme","license":"BSD","main":"sbvr-parser.js","mocha":{"reporter":"spec","recursive":true,"bail":true,"timeout":5000,"_":"test"},"name":"@balena/sbvr-parser","repository":{"type":"git","url":"git+https://github.com/balena-io-modules/sbvr-parser.git"},"scripts":{"lint":"balena-lint -e js --typescript test/","lint-fix":"balena-lint -e js --typescript --fix test/","posttest":"npm run lint","prepare":"ometajs2js --commonjs --input sbvr-parser.ometajs --output sbvr-parser.js && ometajs2js --commonjs --input sbvr-libs.ometajs --output sbvr-libs.js && ometajs2js --commonjs --input lf-optimiser.ometajs --output lf-optimiser.js && ometajs2js --commonjs --input lf-validator.ometajs --output lf-validator.js","prepublish":"require-npm4-to-publish","pretest":"npm run prepare","test":"mocha"},"version":"1.1.1"}');
+    module.exports = JSON.parse('{"_from":"@balena/sbvr-parser@1.2.2","_id":"@balena/sbvr-parser@1.2.2","_inBundle":false,"_integrity":"sha512-fWCOelfu9BNQqRsrhoZ4UyA4jS4pA1xigG1qVcTAqTvI4Q+auO+bCH4wMw/tgQ3WKY3/7oTg92h2+MfYly8U7A==","_location":"/@balena/sbvr-parser","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"@balena/sbvr-parser@1.2.2","name":"@balena/sbvr-parser","escapedName":"@balena%2fsbvr-parser","scope":"@balena","rawSpec":"1.2.2","saveSpec":null,"fetchSpec":"1.2.2"},"_requiredBy":["#USER","/","/@balena/lf-to-abstract-sql"],"_resolved":"https://registry.npmjs.org/@balena/sbvr-parser/-/sbvr-parser-1.2.2.tgz","_shasum":"dda7f38600a639b1b4cb512c39f463f3c0042bfd","_spec":"@balena/sbvr-parser@1.2.2","_where":"C:\\\\Users\\\\pjgaz\\\\Documents\\\\Development\\\\pinejs\\\\pinejs","author":"","bugs":{"url":"https://github.com/balena-io-modules/sbvr-parser/issues"},"bundleDependencies":false,"dependencies":{"lodash":"^4.17.20","ometa-js":"^1.5.4"},"deprecated":false,"description":"SBVR to LF parser.","devDependencies":{"@balena/lint":"^5.4.1","@balena/sbvr-types":"^3.4.0","chai":"^4.3.0","mocha":"^8.2.1","require-npm4-to-publish":"^1.0.0"},"homepage":"https://github.com/balena-io-modules/sbvr-parser#readme","license":"BSD","main":"sbvr-parser.js","mocha":{"reporter":"spec","recursive":true,"bail":true,"timeout":5000,"_":"test"},"name":"@balena/sbvr-parser","repository":{"type":"git","url":"git+https://github.com/balena-io-modules/sbvr-parser.git"},"scripts":{"lint":"balena-lint -e js --typescript test/","lint-fix":"balena-lint -e js --typescript --fix test/","posttest":"npm run lint","prepare":"ometajs2js --commonjs --input sbvr-parser.ometajs --output sbvr-parser.js && ometajs2js --commonjs --input sbvr-libs.ometajs --output sbvr-libs.js && ometajs2js --commonjs --input lf-optimiser.ometajs --output lf-optimiser.js && ometajs2js --commonjs --input lf-validator.ometajs --output lf-validator.js","prepublish":"require-npm4-to-publish","pretest":"npm run prepare","test":"mocha"},"version":"1.2.2"}');
 }, function(module, exports, __webpack_require__) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
@@ -12555,7 +12555,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    exports.validate = exports.fetchProcessing = exports.types = void 0;
+    exports.validate = exports.nativeFactTypes = exports.fetchProcessing = exports.types = void 0;
     const TypeUtils = __webpack_require__(1);
     exports.types = {
         postgres: "DATE",
@@ -12567,13 +12567,20 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
     const fetchProcessing = data => null != data ? new Date(data) : data;
     exports.fetchProcessing = fetchProcessing;
+    exports.nativeFactTypes = {
+        Date: {
+            ...TypeUtils.nativeFactTypeTemplates.equality,
+            "is before": (from, to) => [ "LessThan", from, to ],
+            "is after": (from, to) => [ "GreaterThan", from, to ]
+        }
+    };
     exports.validate = TypeUtils.validate.date;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    exports.validate = exports.fetchProcessing = exports.types = void 0;
+    exports.validate = exports.nativeNames = exports.nativeFactTypes = exports.fetchProcessing = exports.types = void 0;
     const TypeUtils = __webpack_require__(1);
     exports.types = {
         postgres: "TIMESTAMP",
@@ -12585,6 +12592,16 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
     const fetchProcessing = data => null != data ? new Date(data) : data;
     exports.fetchProcessing = fetchProcessing;
+    exports.nativeFactTypes = {
+        "Date Time": {
+            ...TypeUtils.nativeFactTypeTemplates.equality,
+            "is before": (from, to) => [ "LessThan", from, to ],
+            "is after": (from, to) => [ "GreaterThan", from, to ]
+        }
+    };
+    exports.nativeNames = {
+        "Current Time": [ "Now" ]
+    };
     exports.validate = TypeUtils.validate.date;
 }, function(module, exports, __webpack_require__) {
     "use strict";
@@ -14025,6 +14042,8 @@ WHERE "model name" = ${1}`, [ modelName ]);
                 return this._apply("number");
             }), (function() {
                 return this._apply("Value");
+            }), (function() {
+                return this._applyWithArgs("token", "Name");
             })) ];
         },
         AtomicFormulation: function() {
@@ -14589,6 +14608,8 @@ WHERE "model name" = ${1}`, [ modelName ]);
                     return number = this._apply("number");
                 }), (function() {
                     return data = this._apply("Value");
+                }), (function() {
+                    return this._applyWithArgs("NativeNameBinding", baseTermName);
                 }));
             }));
             baseBind = this.bindAttributes[number];
@@ -14611,6 +14632,14 @@ WHERE "model name" = ${1}`, [ modelName ]);
                     conceptTypeResolver && conceptTypeResolver(baseTermName);
                 }
             };
+        },
+        NativeNameBinding: function(baseTermName) {
+            var $elf = this, _fromIdx = this.input.idx, name;
+            name = this._apply("Identifier");
+            this._pred("Name" === name.type);
+            this._pred(this.IsPrimitive(this.ReconstructIdentifier(name)));
+            this._pred(this.sbvrTypes[baseTermName] && this.sbvrTypes[baseTermName].nativeNames && this.sbvrTypes[baseTermName].nativeNames[name.name]);
+            return this.sbvrTypes[baseTermName].nativeNames[name.name];
         },
         NativeProperty: function(actualFactType) {
             var $elf = this, _fromIdx = this.input.idx, binds, negated, operator, primitive, property, verb;
@@ -16859,7 +16888,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
                     return this._applyWithArgs("Name", factTypeSoFar);
                 }));
             }), (function() {
-                this._pred(!noAutoComplete);
+                this._pred(!noAutoComplete && void 0 !== this._getBranches());
                 return this._or((function() {
                     return this._applyWithArgs("Term", factTypeSoFar);
                 }), (function() {
@@ -16968,21 +16997,12 @@ WHERE "model name" = ${1}`, [ modelName ]);
             }));
         },
         IdentifierPart: function() {
-            var $elf = this, _fromIdx = this.input.idx;
+            var $elf = this, _fromIdx = this.input.idx, r;
             this._apply("spaces");
             return this._consumedBy((function() {
                 return this._many1((function() {
-                    return this._or((function() {
-                        return this._apply("letter");
-                    }), (function() {
-                        switch (this.anything()) {
-                          case "-":
-                            return "-";
-
-                          default:
-                            throw this._fail();
-                        }
-                    }));
+                    r = this.anything();
+                    return this._pred(r >= "a" && r <= "z" || r >= "A" && r <= "Z" || "-" === r);
                 }));
             }));
         },
@@ -17343,11 +17363,27 @@ WHERE "model name" = ${1}`, [ modelName ]);
         },
         StartRule: function() {
             var $elf = this, _fromIdx = this.input.idx;
-            return this._or((function() {
-                return this._applyWithArgs("token", "R:");
-            }), (function() {
-                return this._applyWithArgs("token", "Rule:");
-            }));
+            return function() {
+                switch (this.anything()) {
+                  case "R":
+                    switch (this.anything()) {
+                      case ":":
+                        return "R:";
+
+                      case "u":
+                        this._applyWithArgs("exactly", "l");
+                        this._applyWithArgs("exactly", "e");
+                        this._applyWithArgs("exactly", ":");
+                        return "Rule:";
+
+                      default:
+                        throw this._fail();
+                    }
+
+                  default:
+                    throw this._fail();
+                }
+            }.call(this);
         },
         NewRule: function() {
             var $elf = this, _fromIdx = this.input.idx, mod, ruleLF, ruleText;
@@ -17366,11 +17402,32 @@ WHERE "model name" = ${1}`, [ modelName ]);
         },
         StartFactType: function() {
             var $elf = this, _fromIdx = this.input.idx;
-            return this._or((function() {
-                return this._applyWithArgs("token", "F:");
-            }), (function() {
-                return this._applyWithArgs("token", "Fact type:");
-            }));
+            return function() {
+                switch (this.anything()) {
+                  case "F":
+                    switch (this.anything()) {
+                      case ":":
+                        return "F:";
+
+                      case "a":
+                        this._applyWithArgs("exactly", "c");
+                        this._applyWithArgs("exactly", "t");
+                        this._applyWithArgs("exactly", " ");
+                        this._applyWithArgs("exactly", "t");
+                        this._applyWithArgs("exactly", "y");
+                        this._applyWithArgs("exactly", "p");
+                        this._applyWithArgs("exactly", "e");
+                        this._applyWithArgs("exactly", ":");
+                        return "Fact type:";
+
+                      default:
+                        throw this._fail();
+                    }
+
+                  default:
+                    throw this._fail();
+                }
+            }.call(this);
         },
         NewFactType: function() {
             var $elf = this, _fromIdx = this.input.idx, factType, identifier, v;
@@ -17400,25 +17457,67 @@ WHERE "model name" = ${1}`, [ modelName ]);
         },
         StartVocabulary: function() {
             var $elf = this, _fromIdx = this.input.idx;
-            this._applyWithArgs("token", "Vocabulary:");
+            this._applyWithArgs("exactly", "V");
+            this._applyWithArgs("exactly", "o");
+            this._applyWithArgs("exactly", "c");
+            this._applyWithArgs("exactly", "a");
+            this._applyWithArgs("exactly", "b");
+            this._applyWithArgs("exactly", "u");
+            this._applyWithArgs("exactly", "l");
+            this._applyWithArgs("exactly", "a");
+            this._applyWithArgs("exactly", "r");
+            this._applyWithArgs("exactly", "y");
+            this._applyWithArgs("exactly", ":");
             return "Vocabulary";
         },
         StartTerm: function() {
             var $elf = this, _fromIdx = this.input.idx;
-            this._or((function() {
-                return this._applyWithArgs("token", "T:");
-            }), (function() {
-                return this._applyWithArgs("token", "Term:");
-            }));
+            (function() {
+                switch (this.anything()) {
+                  case "T":
+                    switch (this.anything()) {
+                      case ":":
+                        return "T:";
+
+                      case "e":
+                        this._applyWithArgs("exactly", "r");
+                        this._applyWithArgs("exactly", "m");
+                        this._applyWithArgs("exactly", ":");
+                        return "Term:";
+
+                      default:
+                        throw this._fail();
+                    }
+
+                  default:
+                    throw this._fail();
+                }
+            }).call(this);
             return "Term";
         },
         StartName: function() {
             var $elf = this, _fromIdx = this.input.idx;
-            this._or((function() {
-                return this._applyWithArgs("token", "N:");
-            }), (function() {
-                return this._applyWithArgs("token", "Name:");
-            }));
+            (function() {
+                switch (this.anything()) {
+                  case "N":
+                    switch (this.anything()) {
+                      case ":":
+                        return "N:";
+
+                      case "a":
+                        this._applyWithArgs("exactly", "m");
+                        this._applyWithArgs("exactly", "e");
+                        this._applyWithArgs("exactly", ":");
+                        return "Name:";
+
+                      default:
+                        throw this._fail();
+                    }
+
+                  default:
+                    throw this._fail();
+                }
+            }).call(this);
             return "Name";
         },
         NewIdentifier: function() {
@@ -17940,7 +18039,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         return str = str_arr.join(" ");
     });
 }, function(module, exports) {
-    module.exports = "Vocabulary: Type\nTerm:       Integer\nTerm:       Real\nTerm:       Text\nTerm:       Date\nTerm:       Date Time\nTerm:       Time\nTerm:       Interval\nTerm:       File\n\nTerm:       Big Integer\n\tConcept type: Integer\n\nTerm:       Serial\n\tConcept Type: Integer\n\tNote: An auto-incrementing 'Integer'.\nTerm:       Case Insensitive Text\n\tConcept Type: Text\n\tNote: A 'Text' type that is compared case insensitively.\nTerm:       JSON\n\tConcept Type: Text\n\tNote: A 'Text' type that will only allow valid JSON.\nTerm:       Hashed\n\tConcept Type: Text\n\tNote: A 'Text' type that will automatically be converted to a hash.\nTerm:       SHA\n\tConcept Type: Text\n\tNote: A 'Text' type that will automatically be converted to a sha256 hash.\n\nTerm:       Length\n\tConcept Type: Integer\n\nFact type:  Text has Length\n\tNote: Length in characters\n\tNecessity: Each Text has exactly one Length\n\nFact type:  Integer1 is less than Integer2\n\tSynonymous Form: Integer2 is greater than Integer1\nFact type: Integer1 is less than or equal to Integer2\n\tSynonymous Form: Integer2 is greater than or equal to Integer1\nFact type:  Integer1 is equal to Integer2\n\tSynonymous Form: Integer2 is equal to Integer1\n\tSynonymous Form: Integer1 equals Integer2\n\tSynonymous Form: Integer2 equals Integer1\n\nFact type:  Real1 is less than Real2\n\tSynonymous Form: Real2 is greater than Real1\nFact type: Real1 is less than or equal to Real2\n\tSynonymous Form: Real2 is greater than or equal to Real1\nFact type:  Real1 is equal to Real2\n\tSynonymous Form: Real2 is equal to Real1\n\tSynonymous Form: Real1 equals Real2\n\tSynonymous Form: Real2 equals Real1\n\n\nFact type:  Real is less than Integer\n\tSynonymous Form: Integer is greater than Real\nFact type:  Integer is less than Real\n\tSynonymous Form: Real is greater than Integer\n\nFact type: Real is less than or equal to Integer\n\tSynonymous Form: Integer is greater than or equal to Real\nFact type: Integer is less than or equal to Real\n\tSynonymous Form: Real is greater than or equal to Integer\n\nFact type:  Integer is equal to Real\n\tSynonymous Form: Real is equal to Integer\n\tSynonymous Form: Real equals Integer\n\tSynonymous Form: Integer equals Real\n\n\nFact type:  Text1 is equal to Text2\n\tSynonymous Form: Text2 is equal to Text1\n\tSynonymous Form: Text1 equals Text2\n\tSynonymous Form: Text2 equals Text1\n\nFact type:  Text1 starts with Text2\n\nFact type:  Text1 ends with Text2\n\nFact type:  Text1 contains Text2\n\tSynonymous Form: Text2 is contained in Text1\n\nTerm:       Short Text\n\tConcept Type: Text\n\t--Necessity: each Short Text has a Length that is less than or equal to 255.\n\nTerm:       Red Component\n\tConcept Type: Integer\nTerm:       Green Component\n\tConcept Type: Integer\nTerm:       Blue Component\n\tConcept Type: Integer\nTerm:       Alpha Component\n\tConcept Type: Integer\nTerm:       Color\n\tConcept Type: Integer\nFact type:  Color has Red Component\n\tNecessity: Each Color has exactly one Red Component\nFact type:  Color has Green Component\n\tNecessity: Each Color has exactly one Green Component\nFact type:  Color has Blue Component\n\tNecessity: Each Color has exactly one Blue Component\nFact type:  Color has Alpha Component\n\tNecessity: Each Color has exactly one Alpha Component";
+    module.exports = "Vocabulary: Type\nTerm:       Integer\nTerm:       Real\nTerm:       Text\nTerm:       Date\nTerm:       Date Time\nTerm:       Time\nTerm:       Interval\nTerm:       File\n\nTerm:       Big Integer\n\tConcept type: Integer\n\nTerm:       Serial\n\tConcept Type: Integer\n\tNote: An auto-incrementing 'Integer'.\nTerm:       Case Insensitive Text\n\tConcept Type: Text\n\tNote: A 'Text' type that is compared case insensitively.\nTerm:       JSON\n\tConcept Type: Text\n\tNote: A 'Text' type that will only allow valid JSON.\nTerm:       Hashed\n\tConcept Type: Text\n\tNote: A 'Text' type that will automatically be converted to a hash.\nTerm:       SHA\n\tConcept Type: Text\n\tNote: A 'Text' type that will automatically be converted to a sha256 hash.\n\nTerm:       Length\n\tConcept Type: Integer\n\nName:       Current Time\n\tConcept Type: Date Time\n\nFact type:  Text has Length\n\tNote: Length in characters\n\tNecessity: Each Text has exactly one Length\n\nFact type:  Integer1 is less than Integer2\n\tSynonymous Form: Integer2 is greater than Integer1\nFact type: Integer1 is less than or equal to Integer2\n\tSynonymous Form: Integer2 is greater than or equal to Integer1\nFact type:  Integer1 is equal to Integer2\n\tSynonymous Form: Integer2 is equal to Integer1\n\tSynonymous Form: Integer1 equals Integer2\n\tSynonymous Form: Integer2 equals Integer1\n\nFact type:  Real1 is less than Real2\n\tSynonymous Form: Real2 is greater than Real1\nFact type: Real1 is less than or equal to Real2\n\tSynonymous Form: Real2 is greater than or equal to Real1\nFact type:  Real1 is equal to Real2\n\tSynonymous Form: Real2 is equal to Real1\n\tSynonymous Form: Real1 equals Real2\n\tSynonymous Form: Real2 equals Real1\n\nFact type:  Date1 is before Date2\n\tSynonymous Form: Date2 is after Date1\nFact type:  Date1 is equal to Date2\n\tSynonymous Form: Date2 is equal to Date1\n\tSynonymous Form: Date1 equals Date2\n\tSynonymous Form: Date2 equals Date1\n\nFact type:  Date Time1 is before Date Time2\n\tSynonymous Form: Date Time2 is after Date Time1\nFact type:  Date Time1 is equal to Date Time2\n\tSynonymous Form: Date Time2 is equal to Date Time1\n\tSynonymous Form: Date Time1 equals Date Time2\n\tSynonymous Form: Date Time2 equals Date Time1\n\n\nFact type:  Real is less than Integer\n\tSynonymous Form: Integer is greater than Real\nFact type:  Integer is less than Real\n\tSynonymous Form: Real is greater than Integer\n\nFact type: Real is less than or equal to Integer\n\tSynonymous Form: Integer is greater than or equal to Real\nFact type: Integer is less than or equal to Real\n\tSynonymous Form: Real is greater than or equal to Integer\n\nFact type:  Integer is equal to Real\n\tSynonymous Form: Real is equal to Integer\n\tSynonymous Form: Real equals Integer\n\tSynonymous Form: Integer equals Real\n\n\nFact type:  Text1 is equal to Text2\n\tSynonymous Form: Text2 is equal to Text1\n\tSynonymous Form: Text1 equals Text2\n\tSynonymous Form: Text2 equals Text1\n\nFact type:  Text1 starts with Text2\n\nFact type:  Text1 ends with Text2\n\nFact type:  Text1 contains Text2\n\tSynonymous Form: Text2 is contained in Text1\n\nTerm:       Short Text\n\tConcept Type: Text\n\t--Necessity: each Short Text has a Length that is less than or equal to 255.\n\nTerm:       Red Component\n\tConcept Type: Integer\nTerm:       Green Component\n\tConcept Type: Integer\nTerm:       Blue Component\n\tConcept Type: Integer\nTerm:       Alpha Component\n\tConcept Type: Integer\nTerm:       Color\n\tConcept Type: Integer\nFact type:  Color has Red Component\n\tNecessity: Each Color has exactly one Red Component\nFact type:  Color has Green Component\n\tNecessity: Each Color has exactly one Green Component\nFact type:  Color has Blue Component\n\tNecessity: Each Color has exactly one Blue Component\nFact type:  Color has Alpha Component\n\tNecessity: Each Color has exactly one Alpha Component";
 }, function(module, exports) {
     module.exports = "Vocabulary: migrations\r\n\r\nTerm: model name\r\n\tConcept Type: Short Text (Type)\r\nTerm: executed migrations\r\n\tConcept Type: JSON (Type)\r\nTerm: lock time\r\n\tConcept Type: Date Time (Type)\r\n\r\nTerm: migration\r\n\tReference Scheme: model name\r\n\tDatabase ID Field: model name\r\nFact Type: migration has model name\r\n\tNecessity: each migration has exactly one model name\r\nFact Type: migration has executed migrations\r\n\tNecessity: each migration has exactly one executed migrations\r\n\r\nTerm: migration lock\r\n\tReference Scheme: model name\r\n\tDatabase ID Field: model name\r\n\r\nFact Type: migration lock has model name\r\n\tNecessity: each migration lock has exactly one model name\r\n";
 }, function(module, exports, __webpack_require__) {
@@ -17996,7 +18095,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     exports.generateODataMetadata = generateODataMetadata;
     exports.generateODataMetadata.version = version;
 }, function(module) {
-    module.exports = JSON.parse('{"name":"@balena/pinejs","version":"14.17.1","main":"out/server-glue/module","repository":"git@github.com:balena-io/pinejs.git","license":"Apache-2.0","bin":{"abstract-sql-compiler":"./bin/abstract-sql-compiler.js","odata-compiler":"./bin/odata-compiler.js","sbvr-compiler":"./bin/sbvr-compiler.js"},"scripts":{"prepublish":"require-npm4-to-publish","prepublishOnly":"npm run lint","prepare":"npm run build","build":"grunt build","webpack-browser":"grunt browser","webpack-module":"grunt module","webpack-server":"grunt server","webpack-build":"npm run webpack-browser && npm run webpack-module && npm run webpack-server","lint":"balena-lint -e js -e ts --typescript src build typings Gruntfile.ts && npx tsc --project tsconfig.dev.json --noEmit","test":"npm run lint && npm run build && npm run webpack-build","prettify":"balena-lint -e js -e ts --typescript --fix src build typings Gruntfile.ts"},"dependencies":{"@balena/abstract-sql-compiler":"^7.10.1","@balena/abstract-sql-to-typescript":"^1.1.1","@balena/lf-to-abstract-sql":"^4.1.1","@balena/odata-parser":"^2.2.2","@balena/odata-to-abstract-sql":"^5.4.1","@balena/sbvr-parser":"^1.1.1","@balena/sbvr-types":"^3.2.0","@types/bluebird":"^3.5.33","@types/body-parser":"^1.19.0","@types/compression":"^1.7.0","@types/cookie-parser":"^1.4.2","@types/deep-freeze":"^0.1.2","@types/express":"^4.17.11","@types/express-session":"^1.17.3","@types/lodash":"^4.14.168","@types/memoizee":"^0.4.5","@types/method-override":"0.0.31","@types/multer":"^1.4.5","@types/mysql":"^2.15.17","@types/node":"^12.19.15","@types/passport":"^0.4.7","@types/passport-local":"1.0.33","@types/passport-strategy":"^0.2.35","@types/pg":"^7.14.9","@types/randomstring":"^1.1.6","@types/websql":"0.0.27","bluebird":"^3.7.2","commander":"^7.0.0","deep-freeze":"0.0.1","eventemitter3":"^4.0.7","express-session":"^1.17.1","lodash":"^4.17.20","memoizee":"^0.4.15","pinejs-client-core":"^6.9.3","randomstring":"^1.1.5","typed-error":"^3.2.1"},"devDependencies":{"@balena/lint":"^5.4.0","@types/grunt":"^0.4.24","@types/terser-webpack-plugin":"^4.2.0","@types/webpack":"^4.41.26","grunt":"^1.3.0","grunt-check-dependencies":"^1.0.0","grunt-cli":"^1.3.2","grunt-contrib-clean":"^2.0.0","grunt-contrib-concat":"^1.0.1","grunt-contrib-copy":"^1.0.0","grunt-contrib-rename":"^0.2.0","grunt-gitinfo":"^0.1.9","grunt-text-replace":"^0.4.0","grunt-ts":"^6.0.0-beta.22","grunt-webpack":"^4.0.2","husky":"^4.3.8","lint-staged":"^10.5.3","load-grunt-tasks":"^5.1.0","raw-loader":"^4.0.2","require-npm4-to-publish":"^1.0.0","terser-webpack-plugin":"^4.2.3","ts-loader":"^8.0.14","ts-node":"^9.1.1","typescript":"^4.1.3","webpack":"^4.46.0","webpack-dev-server":"^3.11.2"},"optionalDependencies":{"bcrypt":"^5.0.0","body-parser":"^1.19.0","compression":"^1.7.4","cookie-parser":"^1.4.5","express":"^4.17.1","method-override":"^3.0.0","multer":"^1.4.2","mysql":"^2.18.1","passport":"^0.3.2","passport-local":"^1.0.0","pg":"^8.5.1","pg-connection-string":"^2.4.0","serve-static":"^1.14.1"},"engines":{"node":">=10.0.0","npm":">=6.0.0"},"husky":{"hooks":{"pre-commit":"lint-staged"}},"lint-staged":{"*.js":["balena-lint --typescript --fix"],"*.ts":["balena-lint --typescript --fix"]}}');
+    module.exports = JSON.parse('{"name":"@balena/pinejs","version":"14.18.0","main":"out/server-glue/module","repository":"git@github.com:balena-io/pinejs.git","license":"Apache-2.0","bin":{"abstract-sql-compiler":"./bin/abstract-sql-compiler.js","odata-compiler":"./bin/odata-compiler.js","sbvr-compiler":"./bin/sbvr-compiler.js"},"scripts":{"prepublish":"require-npm4-to-publish","prepublishOnly":"npm run lint","prepare":"npm run build","build":"grunt build","webpack-browser":"grunt browser","webpack-module":"grunt module","webpack-server":"grunt server","webpack-build":"npm run webpack-browser && npm run webpack-module && npm run webpack-server","lint":"balena-lint -e js -e ts --typescript src build typings Gruntfile.ts && npx tsc --project tsconfig.dev.json --noEmit","test":"npm run lint && npm run build && npm run webpack-build","prettify":"balena-lint -e js -e ts --typescript --fix src build typings Gruntfile.ts"},"dependencies":{"@balena/abstract-sql-compiler":"^7.10.1","@balena/abstract-sql-to-typescript":"^1.1.1","@balena/lf-to-abstract-sql":"^4.2.0","@balena/odata-parser":"^2.2.2","@balena/odata-to-abstract-sql":"^5.4.1","@balena/sbvr-parser":"^1.2.2","@balena/sbvr-types":"^3.4.0","@types/bluebird":"^3.5.33","@types/body-parser":"^1.19.0","@types/compression":"^1.7.0","@types/cookie-parser":"^1.4.2","@types/deep-freeze":"^0.1.2","@types/express":"^4.17.11","@types/express-session":"^1.17.3","@types/lodash":"^4.14.168","@types/memoizee":"^0.4.5","@types/method-override":"0.0.31","@types/multer":"^1.4.5","@types/mysql":"^2.15.17","@types/node":"^12.19.16","@types/passport":"^0.4.7","@types/passport-local":"1.0.33","@types/passport-strategy":"^0.2.35","@types/pg":"^7.14.9","@types/randomstring":"^1.1.6","@types/websql":"0.0.27","bluebird":"^3.7.2","commander":"^7.0.0","deep-freeze":"0.0.1","eventemitter3":"^4.0.7","express-session":"^1.17.1","lodash":"^4.17.20","memoizee":"^0.4.15","pinejs-client-core":"^6.9.3","randomstring":"^1.1.5","typed-error":"^3.2.1"},"devDependencies":{"@balena/lint":"^5.4.1","@types/grunt":"^0.4.24","@types/terser-webpack-plugin":"^4.2.0","@types/webpack":"^4.41.26","grunt":"^1.3.0","grunt-check-dependencies":"^1.0.0","grunt-cli":"^1.3.2","grunt-contrib-clean":"^2.0.0","grunt-contrib-concat":"^1.0.1","grunt-contrib-copy":"^1.0.0","grunt-contrib-rename":"^0.2.0","grunt-gitinfo":"^0.1.9","grunt-text-replace":"^0.4.0","grunt-ts":"^6.0.0-beta.22","grunt-webpack":"^4.0.2","husky":"^4.3.8","lint-staged":"^10.5.4","load-grunt-tasks":"^5.1.0","raw-loader":"^4.0.2","require-npm4-to-publish":"^1.0.0","terser-webpack-plugin":"^4.2.3","ts-loader":"^8.0.16","ts-node":"^9.1.1","typescript":"^4.1.3","webpack":"^4.46.0","webpack-dev-server":"^3.11.2"},"optionalDependencies":{"bcrypt":"^5.0.0","body-parser":"^1.19.0","compression":"^1.7.4","cookie-parser":"^1.4.5","express":"^4.17.1","method-override":"^3.0.0","multer":"^1.4.2","mysql":"^2.18.1","passport":"^0.3.2","passport-local":"^1.0.0","pg":"^8.5.1","pg-connection-string":"^2.4.0","serve-static":"^1.14.1"},"engines":{"node":">=10.0.0","npm":">=6.0.0"},"husky":{"hooks":{"pre-commit":"lint-staged"}},"lint-staged":{"*.js":["balena-lint --typescript --fix"],"*.ts":["balena-lint --typescript --fix"]}}');
 }, function(module, exports) {
     module.exports = "Vocabulary: dev\r\n\r\nTerm:       model value\r\n\tConcept Type: JSON (Type)\r\nTerm:       model\r\n\tReference Scheme: model value\r\nTerm:       vocabulary\r\n\tConcept Type: Short Text (Type)\r\nTerm:       model type\r\n\tConcept Type: Short Text (Type)\r\n\r\nFact Type: model is of vocabulary\r\n\tNecessity: Each model is of exactly one vocabulary\r\nFact Type: model has model type\r\n\tNecessity: Each model has exactly one model type\r\nFact Type: model has model value\r\n\tNecessity: Each model has exactly one model value\r\n";
 }, function(module, exports, __webpack_require__) {
@@ -18372,9 +18471,9 @@ WHERE "model name" = ${1}`, [ modelName ]);
 }, function(module, exports) {
     module.exports = "Vocabulary: Auth\r\n\r\nTerm:       username\r\n\tConcept Type: Short Text (Type)\r\nTerm:       password\r\n\tConcept Type: Hashed (Type)\r\nTerm:       name\r\n\tConcept Type: Text (Type)\r\nTerm:       key\r\n\tConcept Type: Short Text (Type)\r\nTerm:       expiry date\r\n\tConcept Type: Date Time (Type)\r\nTerm:       description\r\n\tConcept Type: Text (Type)\r\n\r\nTerm:       permission\r\n\tReference Scheme: name\r\nFact type:  permission has name\r\n\tNecessity: Each permission has exactly one name.\r\n\tNecessity: Each name is of exactly one permission.\r\n\r\nTerm:       role\r\n\tReference Scheme: name\r\nFact type:  role has name\r\n\tNecessity: Each role has exactly one name.\r\n\tNecessity: Each name is of exactly one role.\r\nFact type:  role has permission\r\n\r\nTerm:       actor\r\n\r\nTerm:       user\r\n\tReference Scheme: username\r\n\tConcept Type: actor\r\nFact type:  user has username\r\n\tNecessity: Each user has exactly one username.\r\n\tNecessity: Each username is of exactly one user.\r\nFact type:  user has password\r\n\tNecessity: Each user has exactly one password.\r\nFact type:  user has role\r\n\tNote: A 'user' will inherit all the 'permissions' that the 'role' has.\r\n\tTerm Form: user role\r\n\tFact type: user role has expiry date\r\n\t\tNecessity: Each user role has at most one expiry date.\r\nFact type:  user has permission\r\n\tTerm Form: user permission\r\n\tFact type: user permission has expiry date\r\n\t\tNecessity: Each user permission has at most one expiry date.\r\n\r\nTerm:       api key\r\n\tReference Scheme: key\r\nFact type:  api key has key\r\n\tNecessity: each api key has exactly one key\r\n\tNecessity: each key is of exactly one api key\r\nFact type:  api key has role\r\n\tNote: An 'api key' will inherit all the 'permissions' that the 'role' has.\r\nFact type:  api key has permission\r\nFact type:  api key is of actor\r\n\tNecessity: each api key is of exactly one actor\r\nFact type:  api key has name\r\n\tNecessity: Each api key has at most one name.\r\nFact type:  api key has description\r\n\tNecessity: Each api key has at most one description.\r\n";
 }, function(module) {
-    module.exports = JSON.parse('{"_from":"@balena/lf-to-abstract-sql@4.1.1","_id":"@balena/lf-to-abstract-sql@4.1.1","_inBundle":false,"_integrity":"sha512-k1vuEPmoedsxSAgyn4xkUd2pxPLD5GG7BnQQxN4a527+PjF0ivUh3XmvF2qNM04EUfJHyBpWVRivuB1AXP3Hcg==","_location":"/@balena/lf-to-abstract-sql","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"@balena/lf-to-abstract-sql@4.1.1","name":"@balena/lf-to-abstract-sql","escapedName":"@balena%2flf-to-abstract-sql","scope":"@balena","rawSpec":"4.1.1","saveSpec":null,"fetchSpec":"4.1.1"},"_requiredBy":["#USER","/"],"_resolved":"https://registry.npmjs.org/@balena/lf-to-abstract-sql/-/lf-to-abstract-sql-4.1.1.tgz","_shasum":"cb63fe7a6822cfaf5fb882ec5348d68eb563326b","_spec":"@balena/lf-to-abstract-sql@4.1.1","_where":"C:\\\\Users\\\\pjgaz\\\\Documents\\\\Development\\\\pinejs\\\\pinejs","author":"","bugs":{"url":"https://github.com/balena-io-modules/lf-to-abstract-sql/issues"},"bundleDependencies":false,"dependencies":{"@balena/sbvr-parser":"^1.1.1","lodash":"^4.17.20","ometa-js":"^1.5.3"},"deprecated":false,"description":"LF to Abstract SQL translator.","devDependencies":{"@balena/lint":"^5.3.0","@balena/sbvr-types":"^3.1.2","chai":"^4.2.0","mocha":"^8.2.1","require-npm4-to-publish":"^1.0.0"},"homepage":"https://github.com/balena-io-modules/lf-to-abstract-sql#readme","license":"BSD","main":"index.js","mocha":{"reporter":"spec","recursive":true,"bail":true,"timeout":5000,"_":"test/**/*.js"},"name":"@balena/lf-to-abstract-sql","repository":{"type":"git","url":"git+https://github.com/balena-io-modules/lf-to-abstract-sql.git"},"scripts":{"lint":"balena-lint --typescript -e js test index.js","lint-fix":"balena-lint --typescript --fix -e js test index.js","posttest":"npm run lint","prepare":"ometajs2js --commonjs --input lf-to-abstract-sql.ometajs --output lf-to-abstract-sql.js && ometajs2js --commonjs --input lf-to-abstract-sql-prep.ometajs --output lf-to-abstract-sql-prep.js && ometajs2js --commonjs --input sbvr-compiler-libs.ometajs --output sbvr-compiler-libs.js","prepublish":"require-npm4-to-publish","pretest":"npm run prepare","test":"mocha"},"version":"4.1.1"}');
+    module.exports = JSON.parse('{"_from":"@balena/lf-to-abstract-sql@4.2.0","_id":"@balena/lf-to-abstract-sql@4.2.0","_inBundle":false,"_integrity":"sha512-0MHl3Af3d9uX2LWXYATEFLHOVLLtU23w4G2jl09vEplgTXCZKnp7L6aPSs/iBNbxZBfg2V9gExmzo21bRc/T6g==","_location":"/@balena/lf-to-abstract-sql","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"@balena/lf-to-abstract-sql@4.2.0","name":"@balena/lf-to-abstract-sql","escapedName":"@balena%2flf-to-abstract-sql","scope":"@balena","rawSpec":"4.2.0","saveSpec":null,"fetchSpec":"4.2.0"},"_requiredBy":["#USER","/"],"_resolved":"https://registry.npmjs.org/@balena/lf-to-abstract-sql/-/lf-to-abstract-sql-4.2.0.tgz","_shasum":"e77990d4a5ca8c2a0e2f49dfc9a91de6f8af38a6","_spec":"@balena/lf-to-abstract-sql@4.2.0","_where":"C:\\\\Users\\\\pjgaz\\\\Documents\\\\Development\\\\pinejs\\\\pinejs","author":"","bugs":{"url":"https://github.com/balena-io-modules/lf-to-abstract-sql/issues"},"bundleDependencies":false,"dependencies":{"@balena/sbvr-parser":"^1.2.0","lodash":"^4.17.20","ometa-js":"^1.5.3"},"deprecated":false,"description":"LF to Abstract SQL translator.","devDependencies":{"@balena/lint":"^5.4.0","@balena/sbvr-types":"^3.2.0","chai":"^4.3.0","mocha":"^8.2.1","require-npm4-to-publish":"^1.0.0"},"homepage":"https://github.com/balena-io-modules/lf-to-abstract-sql#readme","license":"BSD","main":"index.js","mocha":{"reporter":"spec","recursive":true,"bail":true,"timeout":5000,"_":"test/**/*.js"},"name":"@balena/lf-to-abstract-sql","repository":{"type":"git","url":"git+https://github.com/balena-io-modules/lf-to-abstract-sql.git"},"scripts":{"lint":"balena-lint --typescript -e js test index.js","lint-fix":"balena-lint --typescript --fix -e js test index.js","posttest":"npm run lint","prepare":"ometajs2js --commonjs --input lf-to-abstract-sql.ometajs --output lf-to-abstract-sql.js && ometajs2js --commonjs --input lf-to-abstract-sql-prep.ometajs --output lf-to-abstract-sql-prep.js && ometajs2js --commonjs --input sbvr-compiler-libs.ometajs --output sbvr-compiler-libs.js","prepublish":"require-npm4-to-publish","pretest":"npm run prepare","test":"mocha"},"version":"4.2.0"}');
 }, function(module) {
-    module.exports = JSON.parse('{"_from":"@balena/sbvr-types@3.2.0","_id":"@balena/sbvr-types@3.2.0","_inBundle":false,"_integrity":"sha512-aMgFXboio7W5SHSD6/12B042XyRN9OI7tCN3w9NthqXbVnsTWHXj4U/eh9oLovo5BVUpEb2pgGNbTR5IXMeuEw==","_location":"/@balena/sbvr-types","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"@balena/sbvr-types@3.2.0","name":"@balena/sbvr-types","escapedName":"@balena%2fsbvr-types","scope":"@balena","rawSpec":"3.2.0","saveSpec":null,"fetchSpec":"3.2.0"},"_requiredBy":["#USER","/","/@balena/abstract-sql-compiler","/@balena/abstract-sql-to-typescript/@balena/abstract-sql-compiler","/@balena/odata-to-abstract-sql/@balena/abstract-sql-compiler"],"_resolved":"https://registry.npmjs.org/@balena/sbvr-types/-/sbvr-types-3.2.0.tgz","_shasum":"e548a898644448b2ad3579df2568133339efff3d","_spec":"@balena/sbvr-types@3.2.0","_where":"C:\\\\Users\\\\pjgaz\\\\Documents\\\\Development\\\\pinejs\\\\pinejs","author":"","bugs":{"url":"https://github.com/balena-io-modules/sbvr-types/issues"},"bundleDependencies":false,"dependencies":{"@types/bcrypt":"^3.0.0","@types/sha.js":"^2.4.0","bcrypt":"^5.0.0","bcryptjs":"^2.4.3","sha.js":"^2.4.11"},"deprecated":false,"description":"SBVR type definitions.","devDependencies":{"@balena/lint":"^5.3.0","@types/lodash":"^4.14.165","bluebird":"^3.7.2","chai":"^4.2.0","chai-as-promised":"^7.1.1","chai-datetime":"^1.7.0","coffeescript":"^2.5.1","husky":"^4.3.5","lint-staged":"^10.5.3","lodash":"^4.17.20","mocha":"^8.2.1","require-npm4-to-publish":"^1.0.0","typescript":"^4.1.2"},"homepage":"https://github.com/balena-io-modules/sbvr-types#readme","husky":{"hooks":{"pre-commit":"lint-staged"}},"license":"BSD","lint-staged":{"*.ts":["balena-lint --typescript --fix"],"*.coffee":["balena-lint"]},"main":"out","mocha":{"reporter":"spec","recursive":true,"require":"coffeescript/register","_":"test/**/*.coffee"},"name":"@balena/sbvr-types","optionalDependencies":{"bcrypt":"^5.0.0","bcryptjs":"^2.4.3","sha.js":"^2.4.11"},"repository":{"type":"git","url":"git+https://github.com/balena-io-modules/sbvr-types.git"},"scripts":{"lint":"balena-lint test && balena-lint --typescript src","prepare":"tsc","prepublish":"require-npm4-to-publish","pretest":"npm run lint && npm run prepare","prettify":"balena-lint --typescript --fix src","test":"mocha"},"version":"3.2.0"}');
+    module.exports = JSON.parse('{"_from":"@balena/sbvr-types@3.4.0","_id":"@balena/sbvr-types@3.4.0","_inBundle":false,"_integrity":"sha512-aQrHeh6MsO/1uPbyBOdb1e2kRdFROpcqnZAk/c69v1vOxQraYNEW8KGdz1bbFpxyYv5A2HsBdTOsutij74C5QA==","_location":"/@balena/sbvr-types","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"@balena/sbvr-types@3.4.0","name":"@balena/sbvr-types","escapedName":"@balena%2fsbvr-types","scope":"@balena","rawSpec":"3.4.0","saveSpec":null,"fetchSpec":"3.4.0"},"_requiredBy":["#USER","/","/@balena/abstract-sql-compiler","/@balena/abstract-sql-to-typescript/@balena/abstract-sql-compiler","/@balena/odata-to-abstract-sql/@balena/abstract-sql-compiler"],"_resolved":"https://registry.npmjs.org/@balena/sbvr-types/-/sbvr-types-3.4.0.tgz","_shasum":"69efb10a680c3044e729771f72fd2a6aa6a407b7","_spec":"@balena/sbvr-types@3.4.0","_where":"C:\\\\Users\\\\pjgaz\\\\Documents\\\\Development\\\\pinejs\\\\pinejs","author":"","bugs":{"url":"https://github.com/balena-io-modules/sbvr-types/issues"},"bundleDependencies":false,"dependencies":{"@types/bcrypt":"^3.0.0","@types/sha.js":"^2.4.0","bcrypt":"^5.0.0","bcryptjs":"^2.4.3","sha.js":"^2.4.11"},"deprecated":false,"description":"SBVR type definitions.","devDependencies":{"@balena/lint":"^5.4.1","@types/lodash":"^4.14.168","bluebird":"^3.7.2","chai":"^4.3.0","chai-as-promised":"^7.1.1","chai-datetime":"^1.7.0","coffeescript":"^2.5.1","husky":"^4.3.8","lint-staged":"^10.5.4","lodash":"^4.17.20","mocha":"^8.2.1","require-npm4-to-publish":"^1.0.0","typescript":"^4.1.3"},"homepage":"https://github.com/balena-io-modules/sbvr-types#readme","husky":{"hooks":{"pre-commit":"lint-staged"}},"license":"BSD","lint-staged":{"*.ts":["balena-lint --typescript --fix"],"*.coffee":["balena-lint"]},"main":"out","mocha":{"reporter":"spec","recursive":true,"require":"coffeescript/register","_":"test/**/*.coffee"},"name":"@balena/sbvr-types","optionalDependencies":{"bcrypt":"^5.0.0","bcryptjs":"^2.4.3","sha.js":"^2.4.11"},"repository":{"type":"git","url":"git+https://github.com/balena-io-modules/sbvr-types.git"},"scripts":{"lint":"balena-lint test && balena-lint --typescript src","prepare":"tsc","prepublish":"require-npm4-to-publish","pretest":"npm run lint && npm run prepare","prettify":"balena-lint --typescript --fix src","test":"mocha"},"version":"3.4.0"}');
 }, function(module, exports, __webpack_require__) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
