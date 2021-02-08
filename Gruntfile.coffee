@@ -1,4 +1,3 @@
-webpack = require 'webpack'
 _ = require 'lodash'
 TerserPlugin = require 'terser-webpack-plugin'
 
