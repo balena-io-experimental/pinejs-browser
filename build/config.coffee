@@ -17,7 +17,6 @@ module.exports =
 			'node_modules'
 		]
 		alias:
-			'coffeescript/register': 'null-loader'
 			'fs': 'null-loader'
 			'dns': 'null-loader'
 			'module': 'null-loader'

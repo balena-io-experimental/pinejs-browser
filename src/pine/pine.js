@@ -1,4 +1,13 @@
-!function(e, a) {
+
+							/*! Build: browser - v14.24.1-0-ge7e01375
+							Defines: {
+	"process.browser": true,
+	"process.env.CONFIG_LOADER_DISABLED": true,
+	"process.env.DEBUG": true,
+	"process.env.SBVR_SERVER_ENABLED": true
+}
+							*/
+						!function(e, a) {
     for (var i in a) e[i] = a[i];
 }(exports, function(modules) {
     var installedModules = {};
@@ -66,7 +75,7 @@
         value: !0
     });
     exports.validate = exports.nativeFactTypeTemplates = void 0;
-    const equality = (from, to) => [ "Equals", from, to ], checkRequired = validateFn => {
+    const checkRequired = validateFn => {
         async function runCheck(value, required) {
             if (null == value) {
                 if (required) throw new Error("cannot be null");
@@ -75,19 +84,15 @@
             return validateFn(value);
         }
         return runCheck;
+    }, equality = {
+        "is equal to": (from, to) => [ "Equals", from, to ]
     };
     exports.nativeFactTypeTemplates = {
-        equality: {
-            "is equal to": equality,
-            equals: equality
-        },
+        equality: equality,
         comparison: {
-            "is greater than": (from, to) => [ "GreaterThan", from, to ],
-            "is greater than or equal to": (from, to) => [ "GreaterThanOrEqual", from, to ],
             "is less than": (from, to) => [ "LessThan", from, to ],
             "is less than or equal to": (from, to) => [ "LessThanOrEqual", from, to ],
-            "is equal to": equality,
-            equals: equality
+            ...equality
         }
     };
     exports.validate = {
@@ -186,9 +191,9 @@
         value: !0
     });
     exports.setup = exports.executeStandardModels = exports.handleODataRequest = exports.getAffectedIds = exports.getAbstractSqlModel = exports.runURI = exports.api = exports.PinejsClient = exports.runRule = exports.getID = exports.deleteModel = exports.executeModels = exports.executeModel = exports.generateModels = exports.generateSqlModel = exports.generateAbstractSqlModel = exports.generateLfModel = exports.validateModel = exports.resolveNavigationResource = exports.resolveSynonym = exports.resolveOdataBind = exports.sbvrTypes = exports.db = exports.addSideEffectHook = exports.addPureHook = void 0;
-    const Bluebird = __webpack_require__(21), _ = __webpack_require__(0), cached_compile_1 = __webpack_require__(84), AbstractSQLCompiler = __webpack_require__(23), package_json_1 = __webpack_require__(116), LF2AbstractSQL = __webpack_require__(117), odata_to_abstract_sql_1 = __webpack_require__(16), sbvrTypes = __webpack_require__(13);
+    const Bluebird = __webpack_require__(22), _ = __webpack_require__(0), cached_compile_1 = __webpack_require__(84), AbstractSQLCompiler = __webpack_require__(23), package_json_1 = __webpack_require__(116), LF2AbstractSQL = __webpack_require__(117), odata_to_abstract_sql_1 = __webpack_require__(16), sbvrTypes = __webpack_require__(13);
     exports.sbvrTypes = sbvrTypes;
-    const deepFreeze = __webpack_require__(44), pinejs_client_core_1 = __webpack_require__(177), extended_sbvr_parser_1 = __webpack_require__(62), migrator = __webpack_require__(64), odata_metadata_generator_1 = __webpack_require__(182), devModel = __webpack_require__(184), permissions = __webpack_require__(19), errors_1 = __webpack_require__(20), uriParser = __webpack_require__(67), hooks_1 = __webpack_require__(31);
+    const deepFreeze = __webpack_require__(45), pinejs_client_core_1 = __webpack_require__(178), extended_sbvr_parser_1 = __webpack_require__(62), migrator = __webpack_require__(64), odata_metadata_generator_1 = __webpack_require__(183), devModel = __webpack_require__(185), permissions = __webpack_require__(19), errors_1 = __webpack_require__(20), uriParser = __webpack_require__(67), hooks_1 = __webpack_require__(31);
     var hooks_2 = __webpack_require__(31);
     Object.defineProperty(exports, "addPureHook", {
         enumerable: !0,
@@ -204,7 +209,7 @@
     });
     const memoizeWeak = __webpack_require__(32), controlFlow = __webpack_require__(66);
     exports.db = void 0;
-    const package_json_2 = __webpack_require__(207), package_json_3 = __webpack_require__(208), abstract_sql_1 = __webpack_require__(74);
+    const package_json_2 = __webpack_require__(209), package_json_3 = __webpack_require__(210), abstract_sql_1 = __webpack_require__(74);
     var abstract_sql_2 = __webpack_require__(74);
     Object.defineProperty(exports, "resolveOdataBind", {
         enumerable: !0,
@@ -212,7 +217,7 @@
             return abstract_sql_2.resolveOdataBind;
         }
     });
-    const odataResponse = __webpack_require__(209), module_1 = __webpack_require__(33), LF2AbstractSQLTranslator = LF2AbstractSQL.createTranslator(sbvrTypes), LF2AbstractSQLTranslatorVersion = `${package_json_2.version}+${package_json_3.version}`, models = {}, memoizedResolvedSynonym = memoizeWeak(((abstractSqlModel, resourceName) => {
+    const odataResponse = __webpack_require__(211), module_1 = __webpack_require__(33), LF2AbstractSQLTranslator = LF2AbstractSQL.createTranslator(sbvrTypes), LF2AbstractSQLTranslatorVersion = `${package_json_2.version}+${package_json_3.version}`, models = {}, memoizedResolvedSynonym = memoizeWeak(((abstractSqlModel, resourceName) => {
         const sqlName = odata_to_abstract_sql_1.odataNameToSqlName(resourceName);
         return _(sqlName).split("-").map((namePart => {
             const synonym = abstractSqlModel.synonyms[namePart];
@@ -254,6 +259,7 @@
                 const columns = matches[1].split("_");
                 throw new exports.db.UniqueConstraintError('"' + columns.map(odata_to_abstract_sql_1.sqlNameToODataName).join('" and "') + '" must be unique.');
             }
+            if (err instanceof exports.db.ExclusionConstraintError) throw new exports.db.ExclusionConstraintError("Exclusion constraint violated");
             if (err instanceof exports.db.ForeignKeyConstraintError) {
                 switch (exports.db.engine) {
                   case "mysql":
@@ -589,7 +595,7 @@
     exports.getAffectedIds = getAffectedIds;
     const $getAffectedIds = async ({req: req, request: request, tx: tx}) => {
         var _a, _b;
-        if ("GET" === request.method) throw new Error("Cannot call `getAffectedIds` with a GET request");
+        if (![ "PATCH", "DELETE" ].includes(request.method)) throw new Error("Can only call `getAffectedIds` with PATCH/DELETE requests");
         (request = await uriParser.parseOData({
             method: request.method,
             url: `/${request.vocabulary}${request.url}`
@@ -675,7 +681,8 @@
                             })) : hooks_1.rollbackRequestHooks(request.hooks);
                         }));
                         if (Array.isArray(request)) {
-                            const changeSetResults = await Bluebird.reduce(request, runChangeSet(req, tx), new Map);
+                            const changeSetResults = new Map, changeSetRunner = runChangeSet(req, tx);
+                            for (const r of request) await changeSetRunner(changeSetResults, r);
                             return Array.from(changeSetResults.values());
                         }
                         return await runRequest(req, tx, request);
@@ -719,6 +726,11 @@
                 body: response.getResponseBody()
             } : response)));
         } catch (e) {
+            if (e instanceof errors_1.HttpError) {
+                const body = e.getResponseBody();
+                body ? res.status(e.status).send(body) : res.sendStatus(e.status);
+                return;
+            }
             console.error("An error occurred while constructing the response", e);
             res.sendStatus(500);
         }
@@ -798,7 +810,6 @@
         null !== (_a = result.headers) && void 0 !== _a || (result.headers = {});
         result.headers["Content-Id"] = request.id;
         changeSetResults.set(request.id, result);
-        return changeSetResults;
     }, updateBinds = (changeSetResults, request) => {
         request._defer && (request.odataBinds = request.odataBinds.map((([tag, id]) => {
             if ("ContentReference" === tag) {
@@ -2629,7 +2640,7 @@
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var normalizeOpts = __webpack_require__(24), resolveLength = __webpack_require__(38), plain = __webpack_require__(127);
+    var normalizeOpts = __webpack_require__(24), resolveLength = __webpack_require__(39), plain = __webpack_require__(127);
     module.exports = function(fn) {
         var options = normalizeOpts(arguments[1]), length;
         options.normalizer || 0 !== (length = options.length = resolveLength(options.length, fn.length, options.async)) && (options.primitive ? !1 === length ? options.normalizer = __webpack_require__(152) : length > 1 && (options.normalizer = __webpack_require__(153)(length)) : options.normalizer = !1 === length ? __webpack_require__(154)() : 1 === length ? __webpack_require__(158)() : __webpack_require__(159)(length));
@@ -2652,7 +2663,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    exports.setup = exports.config = exports.addPermissions = exports.checkPermissionsMiddleware = exports.checkPermissions = exports.apiKeyMiddleware = exports.customApiKeyMiddleware = exports.authorizationMiddleware = exports.customAuthorizationMiddleware = exports.getApiKeyPermissions = exports.getUserPermissions = exports.checkPassword = exports.nestedCheck = exports.rootRead = exports.root = exports.PermissionParsingError = exports.PermissionError = void 0;
+    exports.setup = exports.config = exports.addPermissions = exports.checkPermissionsMiddleware = exports.checkPermissions = exports.apiKeyMiddleware = exports.customApiKeyMiddleware = exports.resolveApiKey = exports.authorizationMiddleware = exports.customAuthorizationMiddleware = exports.resolveAuthHeader = exports.getApiKeyPermissions = exports.getUserPermissions = exports.checkPassword = exports.nestedCheck = exports.rootRead = exports.root = exports.PermissionParsingError = exports.PermissionError = void 0;
+    __webpack_require__(186);
     const odata_to_abstract_sql_1 = __webpack_require__(16), ODataParser = __webpack_require__(65), _ = __webpack_require__(0), memoize = __webpack_require__(17), randomstring = __webpack_require__(61), env = __webpack_require__(12), sbvrUtils = __webpack_require__(5), hooks_1 = __webpack_require__(31), errors_1 = __webpack_require__(20);
     Object.defineProperty(exports, "PermissionError", {
         enumerable: !0,
@@ -2666,7 +2678,7 @@
             return errors_1.PermissionParsingError;
         }
     });
-    const uri_parser_1 = __webpack_require__(67), memoizeWeak = __webpack_require__(32), userModel = __webpack_require__(206), DEFAULT_ACTOR_BIND = "@__ACTOR_ID", DEFAULT_ACTOR_BIND_REGEX = new RegExp(_.escapeRegExp("@__ACTOR_ID"), "g");
+    const uri_parser_1 = __webpack_require__(67), memoizeWeak = __webpack_require__(32), userModel = __webpack_require__(208), DEFAULT_ACTOR_BIND = "@__ACTOR_ID", DEFAULT_ACTOR_BIND_REGEX = new RegExp(_.escapeRegExp("@__ACTOR_ID"), "g");
     exports.root = {
         user: {
             id: 0,
@@ -3286,22 +3298,27 @@
             permissions = [];
         }
         permissions.length > 0 && (actor = await getApiKeyActorId(apiKey));
-        req.apiKey = {
+        const resolvedApiKey = {
             key: apiKey,
             permissions: permissions
         };
-        null != actor && (req.apiKey.actor = actor);
-    }, customAuthorizationMiddleware = (expectedScheme = "Bearer") => {
+        null != actor && (resolvedApiKey.actor = actor);
+        return resolvedApiKey;
+    }, resolveAuthHeader = async (req, expectedScheme = "Bearer") => {
+        const auth = req.header("Authorization");
+        if (!auth) return;
+        const parts = auth.split(" ");
+        if (2 !== parts.length) return;
+        const [scheme, apiKey] = parts;
+        return scheme.toLowerCase() === expectedScheme.toLowerCase() ? await checkApiKey(req, apiKey) : void 0;
+    };
+    exports.resolveAuthHeader = resolveAuthHeader;
+    const customAuthorizationMiddleware = (expectedScheme = "Bearer") => {
         expectedScheme = expectedScheme.toLowerCase();
         return async (req, _res, next) => {
             try {
-                const auth = req.header("Authorization");
-                if (!auth) return;
-                const parts = auth.split(" ");
-                if (2 !== parts.length) return;
-                const [scheme, apiKey] = parts;
-                if (scheme.toLowerCase() !== expectedScheme) return;
-                await checkApiKey(req, apiKey);
+                const apiKey = await exports.resolveAuthHeader(req, expectedScheme);
+                apiKey && (req.apiKey = apiKey);
             } finally {
                 null == next || next();
             }
@@ -3309,12 +3326,17 @@
     };
     exports.customAuthorizationMiddleware = customAuthorizationMiddleware;
     exports.authorizationMiddleware = exports.customAuthorizationMiddleware();
+    const resolveApiKey = async (req, paramName = "apikey") => {
+        const apiKey = null != req.params[paramName] ? req.params[paramName] : null != req.body[paramName] ? req.body[paramName] : req.query[paramName];
+        return await checkApiKey(req, apiKey);
+    };
+    exports.resolveApiKey = resolveApiKey;
     const customApiKeyMiddleware = (paramName = "apikey") => {
         null == paramName && (paramName = "apikey");
         return async (req, _res, next) => {
             try {
-                const apiKey = null != req.params[paramName] ? req.params[paramName] : null != req.body[paramName] ? req.body[paramName] : req.query[paramName];
-                await checkApiKey(req, apiKey);
+                const apiKey = await exports.resolveApiKey(req, paramName);
+                apiKey && (req.apiKey = apiKey);
             } finally {
                 null == next || next();
             }
@@ -3781,11 +3803,11 @@
         510: NotExtendedError,
         511: NetworkAuthenticationRequiredError
     };
-}, function(module, exports) {
-    module.exports = require("bluebird");
 }, function(module, exports, __webpack_require__) {
     "use strict";
     module.exports = __webpack_require__(141)() ? Array.from : __webpack_require__(142);
+}, function(module, exports) {
+    module.exports = require("bluebird");
 }, function(module, exports, __webpack_require__) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
@@ -3798,7 +3820,7 @@
         Engines.mysql = "mysql";
         Engines.websql = "websql";
     }(Engines = exports.Engines || (exports.Engines = {}));
-    const AbstractSQLOptimiser_1 = __webpack_require__(36), AbstractSQLRules2SQL_1 = __webpack_require__(47), sbvrTypes = __webpack_require__(13), _ = __webpack_require__(0), AbstractSQLSchemaOptimiser_1 = __webpack_require__(114), referenced_fields_1 = __webpack_require__(115), validateTypes = _.mapValues(sbvrTypes, (({validate: validate}) => validate)), dataTypeValidate = async (value, field) => {
+    const AbstractSQLOptimiser_1 = __webpack_require__(36), AbstractSQLRules2SQL_1 = __webpack_require__(48), sbvrTypes = __webpack_require__(13), _ = __webpack_require__(0), AbstractSQLSchemaOptimiser_1 = __webpack_require__(114), referenced_fields_1 = __webpack_require__(115), validateTypes = _.mapValues(sbvrTypes, (({validate: validate}) => validate)), dataTypeValidate = async (value, field) => {
         const {dataType: dataType, required: required} = field, validateFn = validateTypes[dataType];
         return null != validateFn ? validateFn(value, required) : new Error("is an unsupported type: " + dataType);
     }, dataTypeGen = (engine, {dataType: dataType, required: required, index: index, defaultValue: defaultValue, checks: checks}) => {
@@ -4064,7 +4086,7 @@
         value: !0
     });
     exports.runHooks = exports.addPureHook = exports.addSideEffectHook = exports.addHook = exports.getHooks = exports.rollbackRequestHooks = void 0;
-    const Bluebird = __webpack_require__(21), _ = __webpack_require__(0), control_flow_1 = __webpack_require__(66), memoize = __webpack_require__(17), sbvr_utils_1 = __webpack_require__(5), hookNames = [ "PREPARSE", "POSTPARSE", "PRERUN", "POSTRUN", "PRERESPOND", "POSTRUN-ERROR" ], isValidHook = x => hookNames.includes(x);
+    const Bluebird = __webpack_require__(22), _ = __webpack_require__(0), control_flow_1 = __webpack_require__(66), memoize = __webpack_require__(17), sbvr_utils_1 = __webpack_require__(5), hookNames = [ "PREPARSE", "POSTPARSE", "PRERUN", "POSTRUN", "PRERESPOND", "POSTRUN-ERROR" ], isValidHook = x => hookNames.includes(x);
     class Hook {
         constructor(hook) {
             this.hookFn = hook.hookFn;
@@ -4213,7 +4235,7 @@
     exports.runHooks = runHooks;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    module.exports = __webpack_require__(185)(__webpack_require__(17));
+    module.exports = __webpack_require__(187)(__webpack_require__(17));
 }, function(module, exports, __webpack_require__) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
@@ -4221,9 +4243,9 @@
     });
     exports.init = exports.hooks = exports.types = exports.env = exports.errors = exports.permissions = exports.sbvrUtils = exports.PinejsSessionStore = exports.dbModule = void 0;
     __webpack_require__(76);
-    const dbModule = __webpack_require__(46), configLoader = __webpack_require__(82), migrator = __webpack_require__(64), sbvrUtils = __webpack_require__(5);
-    exports.dbModule = __webpack_require__(46);
-    var pinejs_session_store_1 = __webpack_require__(211);
+    const dbModule = __webpack_require__(47), configLoader = __webpack_require__(82), migrator = __webpack_require__(64), sbvrUtils = __webpack_require__(5);
+    exports.dbModule = __webpack_require__(47);
+    var pinejs_session_store_1 = __webpack_require__(213);
     Object.defineProperty(exports, "PinejsSessionStore", {
         enumerable: !0,
         get: function() {
@@ -4234,7 +4256,7 @@
     exports.permissions = __webpack_require__(19);
     exports.errors = __webpack_require__(20);
     exports.env = __webpack_require__(12);
-    exports.types = __webpack_require__(213);
+    exports.types = __webpack_require__(215);
     exports.hooks = __webpack_require__(31);
     let envDatabaseOptions;
     if (null != dbModule.engines.websql) envDatabaseOptions = {
@@ -4259,7 +4281,7 @@
             await cfgLoader.loadConfig(migrator.config);
             const promises = [];
             {
-                const sbvrServer = await Promise.resolve().then((() => __webpack_require__(214))), transactions = __webpack_require__(215);
+                const sbvrServer = await Promise.resolve().then((() => __webpack_require__(216))), transactions = __webpack_require__(217);
                 promises.push(cfgLoader.loadConfig(sbvrServer.config));
                 promises.push(cfgLoader.loadConfig(transactions.config).then((() => transactions.addModelHooks("data"))));
             }
@@ -4282,7 +4304,7 @@
         value: !0
     });
     exports.AbstractSQLOptimiser = void 0;
-    const _ = __webpack_require__(0), AbstractSQLRules2SQL = __webpack_require__(47), {isAbstractSqlQuery: isAbstractSqlQuery, getAbstractSqlQuery: getAbstractSqlQuery, checkArgs: checkArgs, checkMinArgs: checkMinArgs, isNotNullable: isNotNullable} = AbstractSQLRules2SQL, escapeForLike = str => [ "Replace", [ "Replace", [ "Replace", str, [ "EmbeddedText", "\\" ], [ "EmbeddedText", "\\\\" ] ], [ "EmbeddedText", "_" ], [ "EmbeddedText", "\\_" ] ], [ "EmbeddedText", "%" ], [ "EmbeddedText", "\\%" ] ];
+    const _ = __webpack_require__(0), AbstractSQLRules2SQL = __webpack_require__(48), {isAbstractSqlQuery: isAbstractSqlQuery, getAbstractSqlQuery: getAbstractSqlQuery, checkArgs: checkArgs, checkMinArgs: checkMinArgs, isNotNullable: isNotNullable} = AbstractSQLRules2SQL, escapeForLike = str => [ "Replace", [ "Replace", [ "Replace", str, [ "EmbeddedText", "\\" ], [ "EmbeddedText", "\\\\" ] ], [ "EmbeddedText", "_" ], [ "EmbeddedText", "\\_" ] ], [ "EmbeddedText", "%" ], [ "EmbeddedText", "\\%" ] ];
     let helped = !1, noBinds = !1;
     const Helper = fn => (...args) => {
         const result = fn(...args);
@@ -4340,7 +4362,7 @@
     }, MatchValue = matcher => args => {
         const [type, ...rest] = args;
         return matcher(type) ? typeRules[type](rest) : UnknownValue(args);
-    }, isTextValue = type => "Concat" === type || "Tolower" === type || "ToLower" === type || "Toupper" === type || "ToUpper" === type || AbstractSQLRules2SQL.isTextValue(type), TextValue = MatchValue(isTextValue), isNumericValue = type => "IndexOf" === type || "Indexof" === type || AbstractSQLRules2SQL.isNumericValue(type), NumericValue = MatchValue(isNumericValue), isBooleanValue = type => "Contains" === type || "Substringof" === type || "Startswith" === type || "Endswith" === type || AbstractSQLRules2SQL.isBooleanValue(type), BooleanValue = MatchValue(isBooleanValue), {isDateValue: isDateValue} = AbstractSQLRules2SQL, DateValue = MatchValue(isDateValue), {isJSONValue: isJSONValue} = AbstractSQLRules2SQL, {isDurationValue: isDurationValue} = AbstractSQLRules2SQL, DurationValue = MatchValue(isDurationValue), {isFieldValue: isFieldValue} = AbstractSQLRules2SQL, Field = args => {
+    }, isTextValue = type => "Concat" === type || "Tolower" === type || "ToLower" === type || "Toupper" === type || "ToUpper" === type || AbstractSQLRules2SQL.isTextValue(type), TextValue = MatchValue(isTextValue), isNumericValue = type => "IndexOf" === type || "Indexof" === type || AbstractSQLRules2SQL.isNumericValue(type), NumericValue = MatchValue(isNumericValue), isBooleanValue = type => "Contains" === type || "Substringof" === type || "Startswith" === type || "Endswith" === type || AbstractSQLRules2SQL.isBooleanValue(type), BooleanValue = MatchValue(isBooleanValue), isDateValue = type => "Now" === type || AbstractSQLRules2SQL.isDateValue(type), DateValue = MatchValue(isDateValue), {isJSONValue: isJSONValue} = AbstractSQLRules2SQL, {isDurationValue: isDurationValue} = AbstractSQLRules2SQL, DurationValue = MatchValue(isDurationValue), {isFieldValue: isFieldValue} = AbstractSQLRules2SQL, Field = args => {
         const [type, ...rest] = args;
         if (isFieldValue(type)) return typeRules[type](rest);
         throw new SyntaxError(`Invalid field type: ${type}`);
@@ -4533,7 +4555,8 @@
         Boolean: matchArgs("Boolean", _.identity),
         EmbeddedText: matchArgs("EmbeddedText", _.identity),
         Null: matchArgs("Null"),
-        Now: matchArgs("Now"),
+        CurrentTimestamp: matchArgs("CurrentTimestamp"),
+        CurrentDate: matchArgs("CurrentDate"),
         AggregateJSON: matchArgs("AggregateJSON", _.identity),
         Equals: tryMatches(Helper((args => {
             checkArgs("Equals", args, 2);
@@ -4986,6 +5009,7 @@
             if (0 === tables.length) throw new SyntaxError("'DeleteQuery' must have a From component");
             return [ "DeleteQuery", ...tables, ...where ];
         },
+        Now: rewriteMatch("Now", [], Helper((([]) => [ "CurrentTimestamp" ]))),
         Contains: rewriteMatch("Contains", [ TextValue, TextValue ], Helper((([haystack, needle]) => [ "Like", haystack, [ "Concatenate", [ "EmbeddedText", "%" ], escapeForLike(needle), [ "EmbeddedText", "%" ] ] ]))),
         Substringof: rewriteMatch("Substringof", [ TextValue, TextValue ], Helper((([needle, haystack]) => [ "Like", haystack, [ "Concatenate", [ "EmbeddedText", "%" ], escapeForLike(needle), [ "EmbeddedText", "%" ] ] ]))),
         Startswith: rewriteMatch("Startswith", [ TextValue, TextValue ], Helper((([haystack, needle]) => [ "Like", haystack, [ "Concatenate", escapeForLike(needle), [ "EmbeddedText", "%" ] ] ]))),
@@ -5020,6 +5044,8 @@
         return abstractSQL;
     };
     exports.AbstractSQLOptimiser = AbstractSQLOptimiser;
+}, function(module, exports) {
+    module.exports = require("crypto");
 }, function(module, exports, __webpack_require__) {
     var OMeta = __webpack_require__(9), _ = __webpack_require__(0), SBVRLibs = exports.SBVRLibs = OMeta._extend({});
     SBVRLibs.initialize = function() {
@@ -5213,8 +5239,8 @@
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
-    exports.connect = exports.Tx = exports.engines = exports.ReadOnlyViolationError = exports.TransactionClosedError = exports.CheckConstraintError = exports.ForeignKeyConstraintError = exports.UniqueConstraintError = exports.ConstraintError = exports.DatabaseError = exports.metrics = void 0;
-    const Bluebird = __webpack_require__(21), EventEmitter = __webpack_require__(77), _ = __webpack_require__(0), typed_error_1 = __webpack_require__(34), env = __webpack_require__(12);
+    exports.connect = exports.Tx = exports.engines = exports.ReadOnlyViolationError = exports.TransactionClosedError = exports.ExclusionConstraintError = exports.CheckConstraintError = exports.ForeignKeyConstraintError = exports.UniqueConstraintError = exports.ConstraintError = exports.DatabaseError = exports.metrics = void 0;
+    const Bluebird = __webpack_require__(22), EventEmitter = __webpack_require__(77), _ = __webpack_require__(0), typed_error_1 = __webpack_require__(34), env = __webpack_require__(12);
     exports.metrics = new EventEmitter;
     const isSqlError = value => null != value && null != value.constructor && "SQLError" === value.constructor.name;
     class DatabaseError extends typed_error_1.TypedError {
@@ -5232,6 +5258,8 @@
     exports.ForeignKeyConstraintError = ForeignKeyConstraintError;
     class CheckConstraintError extends ConstraintError {}
     exports.CheckConstraintError = CheckConstraintError;
+    class ExclusionConstraintError extends ConstraintError {}
+    exports.ExclusionConstraintError = ExclusionConstraintError;
     class TransactionClosedError extends DatabaseError {}
     exports.TransactionClosedError = TransactionClosedError;
     class ReadOnlyViolationError extends DatabaseError {}
@@ -5245,6 +5273,7 @@
         UniqueConstraintError: UniqueConstraintError,
         ForeignKeyConstraintError: ForeignKeyConstraintError,
         CheckConstraintError: CheckConstraintError,
+        ExclusionConstraintError: ExclusionConstraintError,
         TransactionClosedError: TransactionClosedError,
         ReadOnlyViolationError: ReadOnlyViolationError
     };
@@ -5413,7 +5442,7 @@
     if (null != maybePg) {
         const pg = maybePg;
         exports.engines.postgres = connectString => {
-            const PG_UNIQUE_VIOLATION = "23505", PG_FOREIGN_KEY_VIOLATION = "23503", PG_CHECK_CONSTRAINT_VIOLATION = "23514";
+            const PG_UNIQUE_VIOLATION = "23505", PG_FOREIGN_KEY_VIOLATION = "23503", PG_CHECK_CONSTRAINT_VIOLATION = "23514", PG_EXCLUSION_CONSTRAINT_VIOLATION = "23P01";
             let config;
             if ("string" == typeof connectString) {
                 const pgConnectionString = undefined;
@@ -5464,6 +5493,7 @@
                         if ("23505" === err.code) throw new UniqueConstraintError(err);
                         if ("23503" === err.code) throw new ForeignKeyConstraintError(err);
                         if ("23514" === err.code) throw new CheckConstraintError(err);
+                        if ("23P01" === err.code) throw new ExclusionConstraintError(err);
                         throw err;
                     }
                     return createResult(result);
@@ -5751,7 +5781,7 @@
     exports.isNumericValue = isNumericValue;
     const NumericValue = MatchValue(exports.isNumericValue), isBooleanValue = type => "Boolean" === type || "Not" === type || "And" === type || "Or" === type || "Exists" === type || "NotExists" === type || "Between" === type || "In" === type || "NotIn" === type || "Equals" === type || "GreaterThan" === type || "GreaterThanOrEqual" === type || "LessThan" === type || "LessThanOrEqual" === type || "NotEquals" === type || "Like" === type || "IsNotDistinctFrom" === type || "IsDistinctFrom" === type;
     exports.isBooleanValue = isBooleanValue;
-    const BooleanValue = MatchValue(exports.isBooleanValue), isDateValue = type => "Date" === type || "ToDate" === type || "ToTime" === type || "Now" === type;
+    const BooleanValue = MatchValue(exports.isBooleanValue), isDateValue = type => "Date" === type || "ToDate" === type || "ToTime" === type || "CurrentTimestamp" === type || "CurrentDate" === type;
     exports.isDateValue = isDateValue;
     const DateValue = MatchValue(exports.isDateValue), isJSONValue = type => "AggregateJSON" === type;
     exports.isJSONValue = isJSONValue;
@@ -6156,9 +6186,13 @@
             exports.checkArgs("Null", args, 0);
             return "NULL";
         },
-        Now: args => {
-            exports.checkArgs("Now", args, 0);
+        CurrentTimestamp: args => {
+            exports.checkArgs("CurrentTimestamp", args, 0);
             return "CURRENT_TIMESTAMP";
+        },
+        CurrentDate: args => {
+            exports.checkArgs("CurrentDate", args, 0);
+            return "CURRENT_DATE";
         },
         AggregateJSON: args => {
             exports.checkArgs("AggregateJSON", args, 1);
@@ -6338,13 +6372,14 @@
             return AddBind([ "Date", args[0] ]);
         },
         Duration: args => {
+            var _a, _b, _c, _d;
             exports.checkArgs("Duration", args, 1);
             if ("websql" === engine) throw new SyntaxError("Durations not supported on: " + engine);
             let duration = args[0];
             if (null == duration || "object" != typeof duration) throw new SyntaxError("Duration must be an object, got " + typeof duration);
             duration = _(duration).pick("negative", "day", "hour", "minute", "second").omitBy(_.isNil).value();
             if (_(duration).omit("negative").isEmpty()) throw new SyntaxError("Invalid duration");
-            return "INTERVAL '" + (duration.negative ? "-" : "") + (duration.day || "0") + " " + (duration.negative ? "-" : "") + (duration.hour || "0") + ":" + (duration.minute || "0") + ":" + Number(duration.second).toLocaleString("en", {
+            return "INTERVAL '" + (duration.negative ? "-" : "") + (null !== (_a = duration.day) && void 0 !== _a ? _a : "0") + " " + (duration.negative ? "-" : "") + (null !== (_b = duration.hour) && void 0 !== _b ? _b : "0") + ":" + (null !== (_c = duration.minute) && void 0 !== _c ? _c : "0") + ":" + Number(null !== (_d = duration.second) && void 0 !== _d ? _d : 0).toLocaleString("en", {
                 minimumFractionDigits: 1
             }) + "'" + ("mysql" === engine ? " DAY_MICROSECOND" : "");
         },
@@ -6538,8 +6573,6 @@
         }
     }
     exports.AbstractSQLRules2SQL = AbstractSQLRules2SQL;
-}, function(module, exports) {
-    module.exports = require("crypto");
 }, function(module, exports, __webpack_require__) {
     var inherits = __webpack_require__(14), Hash = __webpack_require__(15), Buffer = __webpack_require__(8).Buffer, K = [ 1116352408, 1899447441, 3049323471, 3921009573, 961987163, 1508970993, 2453635748, 2870763221, 3624381080, 310598401, 607225278, 1426881987, 1925078388, 2162078206, 2614888103, 3248222580, 3835390401, 4022224774, 264347078, 604807628, 770255983, 1249150122, 1555081692, 1996064986, 2554220882, 2821834349, 2952996808, 3210313671, 3336571891, 3584528711, 113926993, 338241895, 666307205, 773529912, 1294757372, 1396182291, 1695183700, 1986661051, 2177026350, 2456956037, 2730485921, 2820302411, 3259730800, 3345764771, 3516065817, 3600352804, 4094571909, 275423344, 430227734, 506948616, 659060556, 883997877, 958139571, 1322822218, 1537002063, 1747873779, 1955562222, 2024104815, 2227730452, 2361852424, 2428436474, 2756734187, 3204031479, 3329325298 ], W = new Array(64);
     function Sha256() {
@@ -6734,7 +6767,7 @@
     };
     module.exports = Sha512;
 }, function(module, exports, __webpack_require__) {
-    var OMeta = __webpack_require__(9), SBVRLibs = __webpack_require__(37).SBVRLibs, SBVRCompilerLibs = exports.SBVRCompilerLibs = SBVRLibs._extend({
+    var OMeta = __webpack_require__(9), SBVRLibs = __webpack_require__(38).SBVRLibs, SBVRCompilerLibs = exports.SBVRCompilerLibs = SBVRLibs._extend({
         ResolveSynonym: function(name) {
             var $elf = this, _fromIdx = this.input.idx;
             return this._or((function() {
@@ -6801,7 +6834,7 @@
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var assign = __webpack_require__(26), isObject = __webpack_require__(39), isValue = __webpack_require__(6), captureStackTrace = Error.captureStackTrace;
+    var assign = __webpack_require__(26), isObject = __webpack_require__(40), isValue = __webpack_require__(6), captureStackTrace = Error.captureStackTrace;
     module.exports = function(message) {
         var err = new Error(message), code = arguments[1], ext = arguments[2];
         if (!isValue(ext) && isObject(code)) {
@@ -6906,7 +6939,7 @@
         value: !0
     });
     exports.ExtendedSBVRParser = void 0;
-    const sbvr_parser_1 = __webpack_require__(178), Types = __webpack_require__(180), package_json_1 = __webpack_require__(63), package_json_2 = __webpack_require__(63);
+    const sbvr_parser_1 = __webpack_require__(179), Types = __webpack_require__(181), package_json_1 = __webpack_require__(63), package_json_2 = __webpack_require__(63);
     exports.ExtendedSBVRParser = sbvr_parser_1.SBVRParser._extend({
         initialize() {
             sbvr_parser_1.SBVRParser.initialize.call(this);
@@ -6918,14 +6951,14 @@
         version: package_json_1.version + "+" + package_json_2.version
     });
 }, function(module) {
-    module.exports = JSON.parse('{"_from":"@balena/sbvr-parser@1.2.2","_id":"@balena/sbvr-parser@1.2.2","_inBundle":false,"_integrity":"sha512-fWCOelfu9BNQqRsrhoZ4UyA4jS4pA1xigG1qVcTAqTvI4Q+auO+bCH4wMw/tgQ3WKY3/7oTg92h2+MfYly8U7A==","_location":"/@balena/sbvr-parser","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"@balena/sbvr-parser@1.2.2","name":"@balena/sbvr-parser","escapedName":"@balena%2fsbvr-parser","scope":"@balena","rawSpec":"1.2.2","saveSpec":null,"fetchSpec":"1.2.2"},"_requiredBy":["#USER","/","/@balena/lf-to-abstract-sql"],"_resolved":"https://registry.npmjs.org/@balena/sbvr-parser/-/sbvr-parser-1.2.2.tgz","_shasum":"dda7f38600a639b1b4cb512c39f463f3c0042bfd","_spec":"@balena/sbvr-parser@1.2.2","_where":"C:\\\\Users\\\\pjgaz\\\\Documents\\\\Development\\\\pinejs\\\\pinejs","author":"","bugs":{"url":"https://github.com/balena-io-modules/sbvr-parser/issues"},"bundleDependencies":false,"dependencies":{"lodash":"^4.17.20","ometa-js":"^1.5.4"},"deprecated":false,"description":"SBVR to LF parser.","devDependencies":{"@balena/lint":"^5.4.1","@balena/sbvr-types":"^3.4.0","chai":"^4.3.0","mocha":"^8.2.1","require-npm4-to-publish":"^1.0.0"},"homepage":"https://github.com/balena-io-modules/sbvr-parser#readme","license":"BSD","main":"sbvr-parser.js","mocha":{"reporter":"spec","recursive":true,"bail":true,"timeout":5000,"_":"test"},"name":"@balena/sbvr-parser","repository":{"type":"git","url":"git+https://github.com/balena-io-modules/sbvr-parser.git"},"scripts":{"lint":"balena-lint -e js --typescript test/","lint-fix":"balena-lint -e js --typescript --fix test/","posttest":"npm run lint","prepare":"ometajs2js --commonjs --input sbvr-parser.ometajs --output sbvr-parser.js && ometajs2js --commonjs --input sbvr-libs.ometajs --output sbvr-libs.js && ometajs2js --commonjs --input lf-optimiser.ometajs --output lf-optimiser.js && ometajs2js --commonjs --input lf-validator.ometajs --output lf-validator.js","prepublish":"require-npm4-to-publish","pretest":"npm run prepare","test":"mocha"},"version":"1.2.2"}');
+    module.exports = JSON.parse('{"_from":"@balena/sbvr-parser@1.2.4","_id":"@balena/sbvr-parser@1.2.4","_inBundle":false,"_integrity":"sha512-F3G5p3qAErIbVjBq9+F6UUuI04OzcZYLKJUlRnTRGUucZsPMwad28ZyGfn79xx70dqBFHlK/PvW/qG+NDyznXA==","_location":"/@balena/sbvr-parser","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"@balena/sbvr-parser@1.2.4","name":"@balena/sbvr-parser","escapedName":"@balena%2fsbvr-parser","scope":"@balena","rawSpec":"1.2.4","saveSpec":null,"fetchSpec":"1.2.4"},"_requiredBy":["#USER","/","/@balena/lf-to-abstract-sql"],"_resolved":"https://registry.npmjs.org/@balena/sbvr-parser/-/sbvr-parser-1.2.4.tgz","_shasum":"a45e0531f16baf96fbf4f5cc301aff8f5e1e4a7b","_spec":"@balena/sbvr-parser@1.2.4","_where":"C:\\\\Users\\\\pjgaz\\\\Documents\\\\Development\\\\pinejs\\\\pinejs","author":"","bugs":{"url":"https://github.com/balena-io-modules/sbvr-parser/issues"},"bundleDependencies":false,"dependencies":{"lodash":"^4.17.21","ometa-js":"^1.5.4"},"deprecated":false,"description":"SBVR to LF parser.","devDependencies":{"@balena/lint":"^6.1.1","@balena/sbvr-types":"^3.4.3","chai":"^4.3.4","mocha":"^8.4.0","require-npm4-to-publish":"^1.0.0"},"homepage":"https://github.com/balena-io-modules/sbvr-parser#readme","license":"BSD","main":"sbvr-parser.js","mocha":{"reporter":"spec","recursive":true,"bail":true,"timeout":5000,"_":"test"},"name":"@balena/sbvr-parser","repository":{"type":"git","url":"git+https://github.com/balena-io-modules/sbvr-parser.git"},"scripts":{"lint":"balena-lint -e js test/","lint-fix":"balena-lint -e js --fix test/","posttest":"npm run lint","prepare":"ometajs2js --commonjs --input sbvr-parser.ometajs --output sbvr-parser.js && ometajs2js --commonjs --input sbvr-libs.ometajs --output sbvr-libs.js && ometajs2js --commonjs --input lf-optimiser.ometajs --output lf-optimiser.js && ometajs2js --commonjs --input lf-validator.ometajs --output lf-validator.js","prepublish":"require-npm4-to-publish","pretest":"npm run prepare","test":"mocha"},"version":"1.2.4"}');
 }, function(module, exports, __webpack_require__) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
     exports.config = exports.run = exports.postRun = exports.MigrationError = void 0;
-    const Bluebird = __webpack_require__(21), _ = __webpack_require__(0), typed_error_1 = __webpack_require__(34), env_1 = __webpack_require__(12), sbvrUtils = __webpack_require__(5), modelText = __webpack_require__(181);
+    const Bluebird = __webpack_require__(22), _ = __webpack_require__(0), typed_error_1 = __webpack_require__(34), env_1 = __webpack_require__(12), sbvrUtils = __webpack_require__(5), modelText = __webpack_require__(182);
     class MigrationError extends typed_error_1.TypedError {}
     exports.MigrationError = MigrationError;
     const binds = (strings, ...bindNums) => strings.map(((str, i) => {
@@ -7523,7 +7556,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseProcess() {
             var s0, s1, s2, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 0, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 0, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -7556,7 +7589,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseProcessRule() {
             var s0, s1, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 1, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 1, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -7580,7 +7613,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseOData() {
             var s0, s1, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 2, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 2, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -7631,7 +7664,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseQueryOptions() {
             var s0, s1, s2, s3, s4, s5, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 3, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 3, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -7690,7 +7723,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseQueryOption() {
             var s0, s1, s2, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 4, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 4, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -7723,7 +7756,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseDollar() {
             var s0, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 5, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 5, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -7755,7 +7788,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseParameterAliasOption() {
             var s0, s1, s2, s3, s4, s5, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 6, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 6, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -7831,7 +7864,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseOperationParam() {
             var s0, s1, s2, s3, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 7, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 7, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -7867,7 +7900,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseSortOption() {
             var s0, s1, s2, s3, s4, s5, s6, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 8, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 8, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -7934,7 +7967,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseSortProperty() {
             var s0, s1, s2, s3, s4, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 9, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 9, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -7947,27 +7980,36 @@ WHERE "model name" = ${1}`, [ modelName ]);
             }
             s0 = peg$currPos;
             if ((s1 = peg$parsePropertyPath()) !== peg$FAILED) {
-                s2 = peg$parsespaces();
-                rule$expects(peg$e8);
-                if (input.substr(peg$currPos, 3) === peg$c9) {
-                    s3 = peg$c9;
-                    peg$currPos += 3;
-                } else s3 = peg$FAILED;
-                if (s3 === peg$FAILED) {
-                    rule$expects(peg$e9);
-                    if (input.substr(peg$currPos, 4) === peg$c10) {
-                        s3 = peg$c10;
-                        peg$currPos += 4;
-                    } else s3 = peg$FAILED;
-                    if (s3 === peg$FAILED) {
-                        s4 = "";
-                        peg$savedPos = s3 = peg$currPos;
-                        s3 = s4 = peg$f14(s1);
+                s2 = peg$currPos;
+                if ((s3 = peg$parseboundary()) !== peg$FAILED) {
+                    rule$expects(peg$e8);
+                    if (input.substr(peg$currPos, 3) === peg$c9) {
+                        s4 = peg$c9;
+                        peg$currPos += 3;
+                    } else s4 = peg$FAILED;
+                    if (s4 === peg$FAILED) {
+                        rule$expects(peg$e9);
+                        if (input.substr(peg$currPos, 4) === peg$c10) {
+                            s4 = peg$c10;
+                            peg$currPos += 4;
+                        } else s4 = peg$FAILED;
                     }
+                    if (s4 !== peg$FAILED) s2 = s4; else {
+                        peg$currPos = s2;
+                        s2 = peg$FAILED;
+                    }
+                } else {
+                    peg$currPos = s2;
+                    s2 = peg$FAILED;
                 }
-                if (s3 !== peg$FAILED) {
+                if (s2 === peg$FAILED) {
+                    s3 = "";
+                    peg$savedPos = s2 = peg$currPos;
+                    s2 = s3 = peg$f14(s1);
+                }
+                if (s2 !== peg$FAILED) {
                     peg$savedPos = s0;
-                    s0 = peg$f15(s1, s3);
+                    s0 = peg$f15(s1, s2);
                 } else {
                     peg$currPos = s0;
                     s0 = peg$FAILED;
@@ -7986,7 +8028,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseTopOption() {
             var s0, s1, s2, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 10, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 10, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8023,7 +8065,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseSkipOption() {
             var s0, s1, s2, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 11, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 11, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8060,7 +8102,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseInlineCountOption() {
             var s0, s1, s2, s3, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 12, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 12, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8117,7 +8159,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseCountOption() {
             var s0, s1, s2, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 13, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 13, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8154,7 +8196,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseExpandOption() {
             var s0, s1, s2, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 14, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 14, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8191,7 +8233,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseSelectOption() {
             var s0, s1, s2, s3, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 15, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 15, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8243,7 +8285,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseFilterByOption() {
             var s0, s1, s2, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 16, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 16, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8280,7 +8322,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseContentType() {
             var s0, s1, s2, s3, s4, s5, s6, s7, s8, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 17, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 17, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8404,7 +8446,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseFormatOption() {
             var s0, s1, s2, s3, s4, s5, s6, s7, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 18, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 18, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8501,7 +8543,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseFilterByExpression() {
             var s0, s1, s2, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 19, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 19, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8530,7 +8572,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseFilterByExpressionLoop() {
             var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 20, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 20, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8572,17 +8614,21 @@ WHERE "model name" = ${1}`, [ modelName ]);
                 }
                 if (s5 === peg$FAILED) {
                     s5 = peg$currPos;
-                    s6 = peg$parsespaces();
-                    rule$expects(peg$e31);
-                    if (input.substr(peg$currPos, 2) === peg$c31) {
-                        s7 = peg$c31;
-                        peg$currPos += 2;
-                    } else s7 = peg$FAILED;
-                    if (s7 !== peg$FAILED) {
-                        s8 = peg$parsespaces();
-                        if ((s9 = peg$parseGroupedPrimitive()) !== peg$FAILED) {
+                    if ((s6 = peg$parseboundary()) !== peg$FAILED) {
+                        rule$expects(peg$e31);
+                        if (input.substr(peg$currPos, 2) === peg$c31) {
+                            s7 = peg$c31;
+                            peg$currPos += 2;
+                        } else s7 = peg$FAILED;
+                        if (s7 !== peg$FAILED) if ((s8 = peg$parseboundary()) !== peg$FAILED) if ((s9 = peg$parseGroupedPrimitive()) !== peg$FAILED) {
                             peg$savedPos = s5;
                             s5 = peg$f32(s1, s3, s7, s9);
+                        } else {
+                            peg$currPos = s5;
+                            s5 = peg$FAILED;
+                        } else {
+                            peg$currPos = s5;
+                            s5 = peg$FAILED;
                         } else {
                             peg$currPos = s5;
                             s5 = peg$FAILED;
@@ -8613,17 +8659,21 @@ WHERE "model name" = ${1}`, [ modelName ]);
                     }
                     if (s5 === peg$FAILED) {
                         s5 = peg$currPos;
-                        s6 = peg$parsespaces();
-                        rule$expects(peg$e31);
-                        if (input.substr(peg$currPos, 2) === peg$c31) {
-                            s7 = peg$c31;
-                            peg$currPos += 2;
-                        } else s7 = peg$FAILED;
-                        if (s7 !== peg$FAILED) {
-                            s8 = peg$parsespaces();
-                            if ((s9 = peg$parseGroupedPrimitive()) !== peg$FAILED) {
+                        if ((s6 = peg$parseboundary()) !== peg$FAILED) {
+                            rule$expects(peg$e31);
+                            if (input.substr(peg$currPos, 2) === peg$c31) {
+                                s7 = peg$c31;
+                                peg$currPos += 2;
+                            } else s7 = peg$FAILED;
+                            if (s7 !== peg$FAILED) if ((s8 = peg$parseboundary()) !== peg$FAILED) if ((s9 = peg$parseGroupedPrimitive()) !== peg$FAILED) {
                                 peg$savedPos = s5;
                                 s5 = peg$f32(s1, s3, s7, s9);
+                            } else {
+                                peg$currPos = s5;
+                                s5 = peg$FAILED;
+                            } else {
+                                peg$currPos = s5;
+                                s5 = peg$FAILED;
                             } else {
                                 peg$currPos = s5;
                                 s5 = peg$FAILED;
@@ -8663,7 +8713,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseFilterByValue() {
             var s0, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 21, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 21, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8685,7 +8735,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parsePrimitive() {
             var s0, s1, s2, s3, s4, s5, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 22, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 22, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8734,7 +8784,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseGroupedPrecedenceExpression() {
             var s0, s1, s2, s3, s4, s5, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 23, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 23, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8782,7 +8832,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseFilterByOperand() {
             var s0, s1, s2, s3, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 24, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 24, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8884,9 +8934,9 @@ WHERE "model name" = ${1}`, [ modelName ]);
                     }
                 }
             }
-            if (s2 !== peg$FAILED) {
-                s3 = peg$parsespaces();
-                s0 = s2;
+            if (s2 !== peg$FAILED) if ((s3 = peg$parseboundary()) !== peg$FAILED) s0 = s2; else {
+                peg$currPos = s0;
+                s0 = peg$FAILED;
             } else {
                 peg$currPos = s0;
                 s0 = peg$FAILED;
@@ -8901,7 +8951,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseFilterNegateExpression() {
             var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 25, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 25, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -8919,8 +8969,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
                 s2 = peg$c47;
                 peg$currPos += 3;
             } else s2 = peg$FAILED;
-            if (s2 !== peg$FAILED) {
-                s3 = peg$parsespaces();
+            if (s2 !== peg$FAILED) if ((s3 = peg$parseboundary()) !== peg$FAILED) {
                 if ((s4 = peg$parseFilterByValue()) === peg$FAILED) {
                     s4 = peg$currPos;
                     rule$expects(peg$e32);
@@ -8957,6 +9006,9 @@ WHERE "model name" = ${1}`, [ modelName ]);
             } else {
                 peg$currPos = s0;
                 s0 = peg$FAILED;
+            } else {
+                peg$currPos = s0;
+                s0 = peg$FAILED;
             }
             peg$resultsCache[key] = {
                 nextPos: peg$currPos,
@@ -8968,7 +9020,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseGroupedPrimitive() {
             var s0, s1, s2, s3, s4, s5, s6, s7, s8, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 26, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 26, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -9054,7 +9106,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseFilterMethodCallExpression() {
             var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 27, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 27, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -9382,7 +9434,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseLambdaMethodCall() {
             var s0, s1, s2, s3, s4, s5, s6, s7, s8, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 28, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 28, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -9463,7 +9515,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseResourceMethodCall() {
             var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 29, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 29, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -9570,7 +9622,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parsePropertyPathList() {
             var s0, s1, s2, s3, s4, s5, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 30, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 30, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -9629,7 +9681,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parsePropertyPath() {
             var s0, s1, s2, s3, s4, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 31, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 31, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -9683,7 +9735,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseExpandPropertyPathList() {
             var s0, s1, s2, s3, s4, s5, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 32, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 32, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -9742,7 +9794,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseExpandPropertyPath() {
             var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 33, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 33, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -9865,7 +9917,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseLambdaPropertyPath() {
             var s0, s1, s2, s3, s4, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 34, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 34, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -9926,7 +9978,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseKey() {
             var s0, s1, s2, s3, s4, s5, s6, s7, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 35, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 35, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10012,7 +10064,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseNamedKeyBind() {
             var s0, s1, s2, s3, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 36, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 36, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10054,7 +10106,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseKeyBind() {
             var s0, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 37, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 37, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10076,7 +10128,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseLinks() {
             var s0, s1, s2, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 38, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 38, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10110,7 +10162,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parsePathSegment() {
             var s0, s1, s2, s3, s4, s5, s6, s7, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 39, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 39, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10245,7 +10297,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseSubPathSegment() {
             var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 40, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 40, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10350,7 +10402,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseResourceName() {
             var s0, s1, s2, s3, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 41, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 41, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10392,7 +10444,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseNumber() {
             var s0, s1, s2, s3, s4, s5, s6, s7, s8, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 42, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 42, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10478,7 +10530,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseUnsignedInteger() {
             var s0, s1, s2, s3, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 43, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 43, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10520,7 +10572,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseNull() {
             var s0, s1, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 44, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 44, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10552,7 +10604,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseBoolean() {
             var s0, s1, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 45, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 45, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10596,7 +10648,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseDuration() {
             var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 46, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 46, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10739,7 +10791,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseDurationNumber() {
             var s0, s1, s2, s3, s4, s5, s6, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 47, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 47, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10815,7 +10867,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseText() {
             var s0, s1, s2, s3, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 48, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 48, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10855,7 +10907,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseSign() {
             var s0, s1, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 49, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 49, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10901,7 +10953,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseApostrophe() {
             var s0, s1, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 50, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 50, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10940,7 +10992,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseQuotedText() {
             var s0, s1, s2, s3, s4, s5, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 51, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 51, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -10955,14 +11007,40 @@ WHERE "model name" = ${1}`, [ modelName ]);
             if ((s1 = peg$parseApostrophe()) !== peg$FAILED) {
                 s2 = [];
                 s3 = peg$currPos;
-                if ((s4 = peg$parseApostrophe()) !== peg$FAILED) if ((s5 = peg$parseApostrophe()) !== peg$FAILED) s3 = s5; else {
-                    peg$currPos = s3;
-                    s3 = peg$FAILED;
+                s4 = peg$currPos;
+                peg$begin();
+                s5 = peg$parseApostrophe();
+                peg$end(!0);
+                if (s5 === peg$FAILED) s4 = void 0; else {
+                    peg$currPos = s4;
+                    s4 = peg$FAILED;
+                }
+                if (s4 !== peg$FAILED) {
+                    rule$expects(peg$e104);
+                    if (input.length > peg$currPos) {
+                        s5 = input.charAt(peg$currPos);
+                        peg$currPos++;
+                    } else s5 = peg$FAILED;
+                    if (s5 !== peg$FAILED) s3 = s5; else {
+                        peg$currPos = s3;
+                        s3 = peg$FAILED;
+                    }
                 } else {
                     peg$currPos = s3;
                     s3 = peg$FAILED;
                 }
                 if (s3 === peg$FAILED) {
+                    s3 = peg$currPos;
+                    if ((s4 = peg$parseApostrophe()) !== peg$FAILED) if ((s5 = peg$parseApostrophe()) !== peg$FAILED) s3 = s5; else {
+                        peg$currPos = s3;
+                        s3 = peg$FAILED;
+                    } else {
+                        peg$currPos = s3;
+                        s3 = peg$FAILED;
+                    }
+                }
+                for (;s3 !== peg$FAILED; ) {
+                    s2.push(s3);
                     s3 = peg$currPos;
                     s4 = peg$currPos;
                     peg$begin();
@@ -10986,37 +11064,11 @@ WHERE "model name" = ${1}`, [ modelName ]);
                         peg$currPos = s3;
                         s3 = peg$FAILED;
                     }
-                }
-                for (;s3 !== peg$FAILED; ) {
-                    s2.push(s3);
-                    s3 = peg$currPos;
-                    if ((s4 = peg$parseApostrophe()) !== peg$FAILED) if ((s5 = peg$parseApostrophe()) !== peg$FAILED) s3 = s5; else {
-                        peg$currPos = s3;
-                        s3 = peg$FAILED;
-                    } else {
-                        peg$currPos = s3;
-                        s3 = peg$FAILED;
-                    }
                     if (s3 === peg$FAILED) {
                         s3 = peg$currPos;
-                        s4 = peg$currPos;
-                        peg$begin();
-                        s5 = peg$parseApostrophe();
-                        peg$end(!0);
-                        if (s5 === peg$FAILED) s4 = void 0; else {
-                            peg$currPos = s4;
-                            s4 = peg$FAILED;
-                        }
-                        if (s4 !== peg$FAILED) {
-                            rule$expects(peg$e104);
-                            if (input.length > peg$currPos) {
-                                s5 = input.charAt(peg$currPos);
-                                peg$currPos++;
-                            } else s5 = peg$FAILED;
-                            if (s5 !== peg$FAILED) s3 = s5; else {
-                                peg$currPos = s3;
-                                s3 = peg$FAILED;
-                            }
+                        if ((s4 = peg$parseApostrophe()) !== peg$FAILED) if ((s5 = peg$parseApostrophe()) !== peg$FAILED) s3 = s5; else {
+                            peg$currPos = s3;
+                            s3 = peg$FAILED;
                         } else {
                             peg$currPos = s3;
                             s3 = peg$FAILED;
@@ -11044,7 +11096,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseParameterAlias() {
             var s0, s1, s2, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 52, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 52, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -11081,7 +11133,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseNumberBind() {
             var s0, s1, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 53, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 53, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -11108,7 +11160,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseDate() {
             var s0, s1, s2, s3, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 54, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 54, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -11176,7 +11228,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseDateBind() {
             var s0, s1, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 55, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 55, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -11203,7 +11255,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseBooleanBind() {
             var s0, s1, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 56, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 56, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -11230,7 +11282,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseContentReference() {
             var s0, s1, s2, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 57, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 57, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -11267,7 +11319,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         function peg$parseQuotedTextBind() {
             var s0, s1, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 58, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 58, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -11291,10 +11343,50 @@ WHERE "model name" = ${1}`, [ modelName ]);
             };
             return s0;
         }
+        function peg$parseboundary() {
+            var s0, s1, rule$expects = function(expected) {
+                0 === peg$silentFails && peg$expect(expected);
+            }, key = 62 * peg$currPos + 59, cached = peg$resultsCache[key], rule$expectations = [];
+            rule$expects = function(expected) {
+                0 === peg$silentFails && peg$expect(expected);
+                rule$expectations.push(expected);
+            };
+            if (cached) {
+                peg$currPos = cached.nextPos;
+                rule$expectations = cached.expectations;
+                0 === peg$silentFails && rule$expectations.forEach(peg$expect);
+                return cached.result;
+            }
+            s0 = peg$currPos;
+            peg$begin();
+            rule$expects(peg$e32);
+            if (40 === input.charCodeAt(peg$currPos)) {
+                s1 = peg$c32;
+                peg$currPos++;
+            } else s1 = peg$FAILED;
+            peg$end(!1);
+            if (s1 !== peg$FAILED) {
+                peg$currPos = s0;
+                s0 = void 0;
+            } else s0 = peg$FAILED;
+            if (s0 === peg$FAILED) {
+                s0 = [];
+                if ((s1 = peg$parsespace()) !== peg$FAILED) for (;s1 !== peg$FAILED; ) {
+                    s0.push(s1);
+                    s1 = peg$parsespace();
+                } else s0 = peg$FAILED;
+            }
+            peg$resultsCache[key] = {
+                nextPos: peg$currPos,
+                result: s0,
+                expectations: rule$expectations
+            };
+            return s0;
+        }
         function peg$parsespaces() {
             var s0, s1, rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
-            }, key = 60 * peg$currPos + 59, cached = peg$resultsCache[key], rule$expectations = [];
+            }, key = 62 * peg$currPos + 60, cached = peg$resultsCache[key], rule$expectations = [];
             rule$expects = function(expected) {
                 0 === peg$silentFails && peg$expect(expected);
                 rule$expectations.push(expected);
@@ -11306,45 +11398,49 @@ WHERE "model name" = ${1}`, [ modelName ]);
                 return cached.result;
             }
             s0 = [];
-            rule$expects(peg$e107);
-            if (32 === input.charCodeAt(peg$currPos)) {
-                s1 = peg$c101;
-                peg$currPos++;
-            } else s1 = peg$FAILED;
-            if (s1 === peg$FAILED) {
-                rule$expects(peg$e108);
-                if (input.substr(peg$currPos, 3) === peg$c102) {
-                    s1 = peg$c102;
-                    peg$currPos += 3;
-                } else s1 = peg$FAILED;
-                if (s1 === peg$FAILED) {
-                    rule$expects(peg$e21);
-                    if (43 === input.charCodeAt(peg$currPos)) {
-                        s1 = peg$c21;
-                        peg$currPos++;
-                    } else s1 = peg$FAILED;
-                }
-            }
+            s1 = peg$parsespace();
             for (;s1 !== peg$FAILED; ) {
                 s0.push(s1);
-                rule$expects(peg$e107);
-                if (32 === input.charCodeAt(peg$currPos)) {
-                    s1 = peg$c101;
-                    peg$currPos++;
-                } else s1 = peg$FAILED;
-                if (s1 === peg$FAILED) {
-                    rule$expects(peg$e108);
-                    if (input.substr(peg$currPos, 3) === peg$c102) {
-                        s1 = peg$c102;
-                        peg$currPos += 3;
-                    } else s1 = peg$FAILED;
-                    if (s1 === peg$FAILED) {
-                        rule$expects(peg$e21);
-                        if (43 === input.charCodeAt(peg$currPos)) {
-                            s1 = peg$c21;
-                            peg$currPos++;
-                        } else s1 = peg$FAILED;
-                    }
+                s1 = peg$parsespace();
+            }
+            peg$resultsCache[key] = {
+                nextPos: peg$currPos,
+                result: s0,
+                expectations: rule$expectations
+            };
+            return s0;
+        }
+        function peg$parsespace() {
+            var s0, rule$expects = function(expected) {
+                0 === peg$silentFails && peg$expect(expected);
+            }, key = 62 * peg$currPos + 61, cached = peg$resultsCache[key], rule$expectations = [];
+            rule$expects = function(expected) {
+                0 === peg$silentFails && peg$expect(expected);
+                rule$expectations.push(expected);
+            };
+            if (cached) {
+                peg$currPos = cached.nextPos;
+                rule$expectations = cached.expectations;
+                0 === peg$silentFails && rule$expectations.forEach(peg$expect);
+                return cached.result;
+            }
+            rule$expects(peg$e107);
+            if (32 === input.charCodeAt(peg$currPos)) {
+                s0 = peg$c101;
+                peg$currPos++;
+            } else s0 = peg$FAILED;
+            if (s0 === peg$FAILED) {
+                rule$expects(peg$e108);
+                if (input.substr(peg$currPos, 3) === peg$c102) {
+                    s0 = peg$c102;
+                    peg$currPos += 3;
+                } else s0 = peg$FAILED;
+                if (s0 === peg$FAILED) {
+                    rule$expects(peg$e21);
+                    if (43 === input.charCodeAt(peg$currPos)) {
+                        s0 = peg$c21;
+                        peg$currPos++;
+                    } else s0 = peg$FAILED;
                 }
             }
             peg$resultsCache[key] = {
@@ -11461,7 +11557,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         value: !0
     });
     exports.translateUri = exports.parseOData = exports.metadataEndpoints = exports.memoizedGetOData2AbstractSQL = exports.memoizedParseOdata = exports.parseId = exports.TranslationError = exports.ParsingError = exports.BadRequestError = exports.SyntaxError = void 0;
-    const ODataParser = __webpack_require__(65), Bluebird = __webpack_require__(21);
+    const ODataParser = __webpack_require__(65);
     exports.SyntaxError = ODataParser.SyntaxError;
     const odata_to_abstract_sql_1 = __webpack_require__(16), _ = __webpack_require__(0), memoize = __webpack_require__(17), memoizeWeak = __webpack_require__(32);
     var errors_1 = __webpack_require__(20);
@@ -11483,7 +11579,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
             return errors_1.TranslationError;
         }
     });
-    const deepFreeze = __webpack_require__(44), env = __webpack_require__(12), errors_2 = __webpack_require__(20), sbvrUtils = __webpack_require__(5), parseId = b => {
+    const deepFreeze = __webpack_require__(45), env = __webpack_require__(12), errors_2 = __webpack_require__(20), sbvrUtils = __webpack_require__(5), parseId = b => {
         const {tree: tree, binds: binds} = ODataParser.parse(String(b), {
             startRule: "ProcessRule",
             rule: "KeyBind"
@@ -11566,7 +11662,8 @@ WHERE "model name" = ${1}`, [ modelName ]);
         var _a;
         try {
             if (b._isChangeSet && null != b.changeSet) {
-                const sortedCS = _.sortBy(b.changeSet, (el => "/" !== el.url[0])), csReferences = await Bluebird.reduce(sortedCS, parseODataChangeset, new Map);
+                const sortedCS = _.sortBy(b.changeSet, (el => "/" !== el.url[0])), csReferences = new Map;
+                for (const cs of sortedCS) parseODataChangeset(csReferences, cs);
                 return Array.from(csReferences.values());
             }
             {
@@ -11624,7 +11721,6 @@ WHERE "model name" = ${1}`, [ modelName ]);
             _defer: defer
         };
         csReferences.set(contentId, parseResult);
-        return csReferences;
     }, splitApiRoot = url => {
         const urlParts = url.split("/"), apiRoot = urlParts[1];
         if (null == apiRoot) throw new errors_2.ParsingError(`No such api root: ${apiRoot}`);
@@ -11644,7 +11740,14 @@ WHERE "model name" = ${1}`, [ modelName ]);
             const abstractSqlQuery = memoizedOdata2AbstractSQL(request);
             (request = {
                 ...request
-            }).abstractSqlQuery = abstractSqlQuery;
+            }).values = new Proxy(request.values, {
+                set: (obj, prop, value) => {
+                    obj.hasOwnProperty(prop) || sbvrUtils.api[request.vocabulary].logger.warn(`Assigning a new request.values property '${prop}' however it will be ignored`);
+                    obj[prop] = value;
+                    return !0;
+                }
+            });
+            request.abstractSqlQuery = abstractSqlQuery;
             return request;
         }
         return request;
@@ -11652,7 +11755,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     exports.translateUri = translateUri;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var aFrom = __webpack_require__(22), assign = __webpack_require__(26), value = __webpack_require__(4);
+    var aFrom = __webpack_require__(21), assign = __webpack_require__(26), value = __webpack_require__(4);
     module.exports = function(obj) {
         var copy = Object(value(obj)), propertyNames = arguments[1], options = Object(arguments[2]);
         if (copy !== obj && !propertyNames) return copy;
@@ -11671,7 +11774,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var isObject = __webpack_require__(39), value = __webpack_require__(4), objIsPrototypeOf = Object.prototype.isPrototypeOf, defineProperty = Object.defineProperty, nullDesc = {
+    var isObject = __webpack_require__(40), value = __webpack_require__(4), objIsPrototypeOf = Object.prototype.isPrototypeOf, defineProperty = Object.defineProperty, nullDesc = {
         configurable: !0,
         enumerable: !1,
         writable: !0,
@@ -11729,16 +11832,16 @@ WHERE "model name" = ${1}`, [ modelName ]);
             level: 1
         };
     }());
-    __webpack_require__(190);
+    __webpack_require__(192);
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var isArguments = __webpack_require__(29), isString = __webpack_require__(30), ArrayIterator = __webpack_require__(193), StringIterator = __webpack_require__(201), iterable = __webpack_require__(202), iteratorSymbol = __webpack_require__(11).iterator;
+    var isArguments = __webpack_require__(29), isString = __webpack_require__(30), ArrayIterator = __webpack_require__(195), StringIterator = __webpack_require__(203), iterable = __webpack_require__(204), iteratorSymbol = __webpack_require__(11).iterator;
     module.exports = function(obj) {
         return "function" == typeof iterable(obj)[iteratorSymbol] ? obj[iteratorSymbol]() : isArguments(obj) ? new ArrayIterator(obj) : isString(obj) ? new StringIterator(obj) : new ArrayIterator(obj);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var clear = __webpack_require__(194), assign = __webpack_require__(26), callable = __webpack_require__(2), value = __webpack_require__(4), d = __webpack_require__(3), autoBind = __webpack_require__(195), Symbol = __webpack_require__(11), defineProperty = Object.defineProperty, defineProperties = Object.defineProperties, Iterator;
+    var clear = __webpack_require__(196), assign = __webpack_require__(26), callable = __webpack_require__(2), value = __webpack_require__(4), d = __webpack_require__(3), autoBind = __webpack_require__(197), Symbol = __webpack_require__(11), defineProperty = Object.defineProperty, defineProperties = Object.defineProperties, Iterator;
     module.exports = Iterator = function(list, context) {
         if (!(this instanceof Iterator)) throw new TypeError("Constructor requires 'new'");
         defineProperties(this, {
@@ -11825,7 +11928,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     })));
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var isValue = __webpack_require__(18), isObject = __webpack_require__(40), stringCoerce = __webpack_require__(197), toShortString = __webpack_require__(198), resolveMessage = function(message, value) {
+    var isValue = __webpack_require__(18), isObject = __webpack_require__(41), stringCoerce = __webpack_require__(199), toShortString = __webpack_require__(200), resolveMessage = function(message, value) {
         return message.replace("%v", toShortString(value));
     };
     module.exports = function(value, defaultMessage, inputOptions) {
@@ -11844,7 +11947,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         value: !0
     });
     exports.isRuleAffected = exports.getAndCheckBindValues = exports.resolveOdataBind = exports.compileRequest = void 0;
-    const _ = __webpack_require__(0), AbstractSQLCompiler = __webpack_require__(23), odata_to_abstract_sql_1 = __webpack_require__(16), deepFreeze = __webpack_require__(44), memoize = __webpack_require__(17), memoizeWeak = __webpack_require__(32), env = __webpack_require__(12), errors_1 = __webpack_require__(20), sbvrUtils = __webpack_require__(5), getMemoizedCompileRule = memoize((engine => memoizeWeak((abstractSqlQuery => {
+    const _ = __webpack_require__(0), AbstractSQLCompiler = __webpack_require__(23), odata_to_abstract_sql_1 = __webpack_require__(16), deepFreeze = __webpack_require__(45), memoize = __webpack_require__(17), memoizeWeak = __webpack_require__(32), env = __webpack_require__(12), errors_1 = __webpack_require__(20), sbvrUtils = __webpack_require__(5), getMemoizedCompileRule = memoize((engine => memoizeWeak((abstractSqlQuery => {
         const sqlQuery = AbstractSQLCompiler[engine].compileRule(abstractSqlQuery), modifiedFields = AbstractSQLCompiler[engine].getModifiedFields(abstractSqlQuery);
         null != modifiedFields && deepFreeze(modifiedFields);
         return {
@@ -11973,7 +12076,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
             return extended_sbvr_parser_1.ExtendedSBVRParser;
         }
     });
-    const passportPinejs = __webpack_require__(217), express = undefined, app = __webpack_require__(218)();
+    const passportPinejs = __webpack_require__(219), express = undefined, app = __webpack_require__(220)();
     switch (app.get("env")) {
       case "production":
         console.log = () => {};
@@ -12291,7 +12394,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
                 if (null != model.customServerCode) {
                     let customCode;
                     if ("string" == typeof model.customServerCode) try {
-                        customCode = nodeRequire(model.customServerCode).setup;
+                        customCode = require(model.customServerCode).setup;
                     } catch (e) {
                         e.message = `Error loading custom server code: '${e.message}'`;
                         throw e;
@@ -12305,7 +12408,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
             })));
         })), loadConfigFile = async configPath => {
             console.info("Loading config:", configPath);
-            return await Promise.resolve().then((() => __webpack_require__(210)(configPath)));
+            return await Promise.resolve().then((() => __webpack_require__(212)(configPath)));
         }, loadApplicationConfig = async config => {
             try {
                 console.info("Loading application config");
@@ -12336,7 +12439,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
                               case ".coffee":
                               case ".ts":
                               case ".js":
-                                migrations[migrationKey] = nodeRequire(filePath);
+                                migrations[migrationKey] = require(filePath);
                                 break;
 
                               case ".sql":
@@ -12438,7 +12541,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
             name: "Edm.Boolean"
         }
     };
-    const fetchProcessing = data => 1 === data;
+    const fetchProcessing = data => !0 === data || 1 === data;
     exports.fetchProcessing = fetchProcessing;
     exports.validate = TypeUtils.validate.checkRequired((originalValue => {
         const value = Number(originalValue);
@@ -12570,8 +12673,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     exports.nativeFactTypes = {
         Date: {
             ...TypeUtils.nativeFactTypeTemplates.equality,
-            "is before": (from, to) => [ "LessThan", from, to ],
-            "is after": (from, to) => [ "GreaterThan", from, to ]
+            "is before": (from, to) => [ "LessThan", from, to ]
         }
     };
     exports.validate = TypeUtils.validate.date;
@@ -12595,8 +12697,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     exports.nativeFactTypes = {
         "Date Time": {
             ...TypeUtils.nativeFactTypeTemplates.equality,
-            "is before": (from, to) => [ "LessThan", from, to ],
-            "is after": (from, to) => [ "GreaterThan", from, to ]
+            "is before": (from, to) => [ "LessThan", from, to ]
         }
     };
     exports.nativeNames = {
@@ -12792,7 +12893,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     const TypeUtils = __webpack_require__(1);
     let sha256;
     try {
-        const crypto = __webpack_require__(48);
+        const crypto = __webpack_require__(37);
         sha256 = value => {
             const hash = crypto.createHash("sha256");
             hash.update(value);
@@ -13081,8 +13182,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
             ...TypeUtils.nativeFactTypeTemplates.equality,
             "starts with": (from, to) => [ "Startswith", from, to ],
             "ends with": (from, to) => [ "Endswith", from, to ],
-            contains: (from, to) => [ "Contains", from, to ],
-            "is contained in": (from, to) => [ "Contains", to, from ]
+            contains: (from, to) => [ "Contains", from, to ]
         }
     };
     exports.validate = TypeUtils.validate.text();
@@ -13179,7 +13279,18 @@ WHERE "model name" = ${1}`, [ modelName ]);
         value: !0
     });
     exports.getModifiedFields = exports.getRuleReferencedFields = exports.getReferencedFields = void 0;
-    const _ = __webpack_require__(0), AbstractSQLCompiler_1 = __webpack_require__(23), AbstractSQLOptimiser_1 = __webpack_require__(36), getScope = (rulePart, scope) => {
+    const _ = __webpack_require__(0), AbstractSQLCompiler_1 = __webpack_require__(23), AbstractSQLOptimiser_1 = __webpack_require__(36), getReferencedFields = ruleBody => {
+        const referencedFields = exports.getRuleReferencedFields(ruleBody);
+        return _.mapValues(referencedFields, (({update: update}) => _.uniq(update)));
+    };
+    exports.getReferencedFields = getReferencedFields;
+    var IsSafe;
+    !function(IsSafe) {
+        IsSafe.Insert = "ins";
+        IsSafe.Delete = "del";
+        IsSafe.Unknown = "";
+    }(IsSafe || (IsSafe = {}));
+    const getRuleReferencedScope = (rulePart, scope, isSafe) => {
         scope = {
             ...scope
         };
@@ -13191,11 +13302,17 @@ WHERE "model name" = ${1}`, [ modelName ]);
                 if ("string" != typeof alias) throw new Error("Cannot handle non-string aliases");
                 switch (from[0]) {
                   case "Table":
-                    scope[alias] = from[1];
+                    scope[alias] = {
+                        tableName: from[1],
+                        isSafe: isSafe
+                    };
                     break;
 
                   case "SelectQuery":
-                    scope[alias] = "";
+                    scope[alias] = {
+                        tableName: "",
+                        isSafe: isSafe
+                    };
                     break;
 
                   default:
@@ -13203,79 +13320,67 @@ WHERE "model name" = ${1}`, [ modelName ]);
                 }
             } else {
                 if ("Table" !== nested[0]) throw Error(`Unsupported FromNode for scoping: ${nested[0]}`);
-                scope[nested[1]] = nested[1];
+                scope[nested[1]] = {
+                    tableName: nested[1],
+                    isSafe: isSafe
+                };
             }
         }));
         return scope;
-    }, $getReferencedFields = (referencedFields, rulePart, scope = {}) => {
+    }, $getRuleReferencedFields = (referencedFields, rulePart, isSafe, scope = {}) => {
         if (Array.isArray(rulePart)) switch (rulePart[0]) {
           case "SelectQuery":
-            scope = getScope(rulePart, scope);
+            scope = getRuleReferencedScope(rulePart, scope, isSafe);
             rulePart.forEach((node => {
-                $getReferencedFields(referencedFields, node, scope);
+                $getRuleReferencedFields(referencedFields, node, isSafe, scope);
             }));
-            break;
+            return;
 
           case "ReferencedField":
-            let tableName = rulePart[1];
-            const fieldName = rulePart[2];
-            if ("string" != typeof tableName || "string" != typeof fieldName) throw new Error(`Invalid ReferencedField: ${rulePart}`);
-            tableName = scope[tableName];
-            if ("" !== tableName) {
-                null == referencedFields[tableName] && (referencedFields[tableName] = []);
-                referencedFields[tableName].push(fieldName);
+            const aliasName = rulePart[1], fieldName = rulePart[2];
+            if ("string" != typeof aliasName || "string" != typeof fieldName) throw new Error(`Invalid ReferencedField: ${rulePart}`);
+            const a = scope[aliasName];
+            if ("" !== a.tableName) {
+                null == referencedFields[a.tableName] && (referencedFields[a.tableName] = {
+                    create: [],
+                    update: [],
+                    delete: []
+                });
+                a.isSafe !== IsSafe.Insert && referencedFields[a.tableName].create.push(fieldName);
+                a.isSafe !== IsSafe.Delete && referencedFields[a.tableName].delete.push(fieldName);
+                referencedFields[a.tableName].update.push(fieldName);
             }
             return;
 
           case "Field":
             throw new Error("Cannot find queried fields for unreferenced fields");
 
+          case "Not":
+          case "NotExists":
+            isSafe === IsSafe.Insert ? isSafe = IsSafe.Delete : isSafe === IsSafe.Delete && (isSafe = IsSafe.Insert);
+
+          case "Where":
+          case "And":
+          case "Exists":
+            rulePart.forEach((node => {
+                $getRuleReferencedFields(referencedFields, node, isSafe, scope);
+            }));
+            return;
+
           default:
             rulePart.forEach((node => {
-                $getReferencedFields(referencedFields, node, scope);
+                $getRuleReferencedFields(referencedFields, node, IsSafe.Unknown, scope);
             }));
         }
-    }, getReferencedFields = ruleBody => {
+    }, getRuleReferencedFields = ruleBody => {
         ruleBody = AbstractSQLOptimiser_1.AbstractSQLOptimiser(ruleBody);
         const referencedFields = {};
-        $getReferencedFields(referencedFields, ruleBody);
-        return _.mapValues(referencedFields, _.uniq);
-    };
-    exports.getReferencedFields = getReferencedFields;
-    const dealiasTableNode = n => AbstractSQLCompiler_1.isTableNode(n) ? n : "Alias" === n[0] && AbstractSQLCompiler_1.isTableNode(n[1]) ? n[1] : void 0, getRuleReferencedFields = ruleBody => {
-        ruleBody = AbstractSQLOptimiser_1.AbstractSQLOptimiser(ruleBody);
-        let referencedFields = {};
-        const deletable = new Set;
-        if ("NotExists" === ruleBody[0]) {
-            const s = ruleBody[1];
-            "SelectQuery" === s[0] && s.forEach((m => {
-                if (!AbstractSQLCompiler_1.isFromNode(m)) return;
-                const table = dealiasTableNode(m[1]);
-                null != table && deletable.add(table[1]);
-            }));
+        $getRuleReferencedFields(referencedFields, ruleBody, IsSafe.Insert);
+        for (const tableName of Object.keys(referencedFields)) {
+            const tableRefs = referencedFields[tableName];
+            for (const method of Object.keys(tableRefs)) tableRefs[method] = _.uniq(tableRefs[method]);
         }
-        $getReferencedFields(referencedFields, ruleBody);
-        referencedFields = _.mapValues(referencedFields, _.uniq);
-        const refFields = {};
-        for (const f of Object.keys(referencedFields)) {
-            refFields[f] = {
-                create: referencedFields[f],
-                update: referencedFields[f],
-                delete: referencedFields[f]
-            };
-            if (deletable.has(f)) {
-                const countFroms = n => {
-                    let count = 0;
-                    n.forEach((p => {
-                        var _a;
-                        Array.isArray(p) && (AbstractSQLCompiler_1.isFromNode(p) && (null === (_a = dealiasTableNode(p[1])) || void 0 === _a ? void 0 : _a[1]) === f ? count++ : count += countFroms(p));
-                    }));
-                    return count;
-                };
-                1 === countFroms(ruleBody) && (refFields[f].delete = []);
-            }
-        }
-        return refFields;
+        return referencedFields;
     };
     exports.getRuleReferencedFields = getRuleReferencedFields;
     const checkQuery = query => {
@@ -13303,10 +13408,10 @@ WHERE "model name" = ${1}`, [ modelName ]);
             action: "update",
             fields: _(query).filter((v => null != v && "Fields" === v[0])).flatMap((v => v[1])).value()
         };
-    }, getModifiedFields = abstractSqlQuery => Array.isArray(abstractSqlQuery[0]) ? abstractSqlQuery.map(checkQuery) : checkQuery(abstractSqlQuery);
+    }, getModifiedFields = abstractSqlQuery => "UpsertQuery" === abstractSqlQuery[0] ? abstractSqlQuery.slice(1).map(checkQuery) : Array.isArray(abstractSqlQuery[0]) ? abstractSqlQuery.map(checkQuery) : checkQuery(abstractSqlQuery);
     exports.getModifiedFields = getModifiedFields;
 }, function(module) {
-    module.exports = JSON.parse('{"_from":"@balena/abstract-sql-compiler@7.10.1","_id":"@balena/abstract-sql-compiler@7.10.1","_inBundle":false,"_integrity":"sha512-DbjntMafMU4gyApmpdt9KHJglkRLR8YFaZT4rRdMICV79wxtwj9uli3mK2uP3+GVEROZOVaTtBPTkwS4SEJhVQ==","_location":"/@balena/abstract-sql-compiler","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"@balena/abstract-sql-compiler@7.10.1","name":"@balena/abstract-sql-compiler","escapedName":"@balena%2fabstract-sql-compiler","scope":"@balena","rawSpec":"7.10.1","saveSpec":null,"fetchSpec":"7.10.1"},"_requiredBy":["#USER","/"],"_resolved":"https://registry.npmjs.org/@balena/abstract-sql-compiler/-/abstract-sql-compiler-7.10.1.tgz","_shasum":"d93e6320b98ec2424300322222bf523dc548c07f","_spec":"@balena/abstract-sql-compiler@7.10.1","_where":"C:\\\\Users\\\\pjgaz\\\\Documents\\\\Development\\\\pinejs\\\\pinejs","author":"","bugs":{"url":"https://github.com/balena-io-modules/abstract-sql-compiler/issues"},"bundleDependencies":false,"dependencies":{"@balena/sbvr-types":"^3.1.3","@types/lodash":"^4.14.168","@types/node":"^10.17.51","lodash":"^4.17.20"},"deprecated":false,"description":"A translator for abstract sql into sql.","devDependencies":{"@balena/lf-to-abstract-sql":"^4.1.1","@balena/lint":"^5.4.0","@balena/odata-parser":"^2.2.2","@balena/sbvr-parser":"^1.1.1","@resin/odata-to-abstract-sql":"^3.3.0","@types/chai":"^4.2.14","@types/common-tags":"^1.8.0","@types/mocha":"^8.2.0","chai":"^4.2.0","common-tags":"^1.8.0","husky":"^4.3.8","lint-staged":"^10.5.3","mocha":"^8.2.1","require-npm4-to-publish":"^1.0.0","ts-node":"^9.1.1","typescript":"^4.1.3"},"homepage":"https://github.com/balena-io-modules/abstract-sql-compiler#readme","husky":{"hooks":{"pre-commit":"lint-staged"}},"lint-staged":{"*.js":["balena-lint --typescript --fix"],"*.ts":["balena-lint --typescript --fix"]},"main":"out/AbstractSQLCompiler.js","mocha":{"reporter":"spec","recursive":true,"require":"ts-node/register/transpile-only","bail":true,"_":["test/**/*.ts","test/**/*.js"]},"name":"@balena/abstract-sql-compiler","repository":{"type":"git","url":"git+https://github.com/balena-io-modules/abstract-sql-compiler.git"},"scripts":{"lint":"balena-lint --typescript --fix -e js -e ts src/ test/ && tsc --noEmit && tsc --noEmit --project tsconfig.js.json","posttest":"npm run lint","prepare":"tsc --project ./tsconfig.build.json","prepublish":"require-npm4-to-publish","pretest":"npm run prepare","test":"mocha"},"types":"out/AbstractSQLCompiler.d.ts","version":"7.10.1"}');
+    module.exports = JSON.parse('{"_from":"@balena/abstract-sql-compiler@7.13.0","_id":"@balena/abstract-sql-compiler@7.13.0","_inBundle":false,"_integrity":"sha512-GkM7Ps8jYo3Fz80Kbs5NuekRIMg8jKf8EBhfjp48dOVHvAYW+qvNKJ5VfAnrSdtCTMXjNjpkAHXCBXXN+Iendw==","_location":"/@balena/abstract-sql-compiler","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"@balena/abstract-sql-compiler@7.13.0","name":"@balena/abstract-sql-compiler","escapedName":"@balena%2fabstract-sql-compiler","scope":"@balena","rawSpec":"7.13.0","saveSpec":null,"fetchSpec":"7.13.0"},"_requiredBy":["#USER","/","/@balena/odata-to-abstract-sql"],"_resolved":"https://registry.npmjs.org/@balena/abstract-sql-compiler/-/abstract-sql-compiler-7.13.0.tgz","_shasum":"fa33948d2cae337b73b61423aa69632051b44084","_spec":"@balena/abstract-sql-compiler@7.13.0","_where":"C:\\\\Users\\\\pjgaz\\\\Documents\\\\Development\\\\pinejs\\\\pinejs","author":"","bugs":{"url":"https://github.com/balena-io-modules/abstract-sql-compiler/issues"},"bundleDependencies":false,"dependencies":{"@balena/sbvr-types":"^3.4.3","@types/lodash":"^4.14.169","@types/node":"^10.17.60","lodash":"^4.17.21"},"deprecated":false,"description":"A translator for abstract sql into sql.","devDependencies":{"@balena/lf-to-abstract-sql":"^4.2.1","@balena/lint":"^5.4.2","@balena/odata-parser":"^2.2.4","@balena/sbvr-parser":"^1.2.2","@resin/odata-to-abstract-sql":"^3.3.0","@types/chai":"^4.2.18","@types/common-tags":"^1.8.0","@types/mocha":"^8.2.2","chai":"^4.3.4","common-tags":"^1.8.0","husky":"^4.3.8","lint-staged":"^10.5.4","mocha":"^8.4.0","require-npm4-to-publish":"^1.0.0","ts-node":"^9.1.1","typescript":"^4.2.4"},"homepage":"https://github.com/balena-io-modules/abstract-sql-compiler#readme","husky":{"hooks":{"pre-commit":"lint-staged"}},"lint-staged":{"*.js":["balena-lint --typescript --fix"],"*.ts":["balena-lint --typescript --fix"]},"main":"out/AbstractSQLCompiler.js","mocha":{"reporter":"spec","recursive":true,"require":"ts-node/register/transpile-only","bail":true,"_":["test/**/*.ts","test/**/*.js"]},"name":"@balena/abstract-sql-compiler","repository":{"type":"git","url":"git+https://github.com/balena-io-modules/abstract-sql-compiler.git"},"scripts":{"lint":"balena-lint --typescript --fix -e js -e ts src/ test/ && tsc --noEmit && tsc --noEmit --project tsconfig.js.json","posttest":"npm run lint","prepare":"tsc --project ./tsconfig.build.json","prepublish":"require-npm4-to-publish","pretest":"npm run prepare","test":"mocha"},"types":"out/AbstractSQLCompiler.d.ts","version":"7.13.0"}');
 }, function(module, exports, __webpack_require__) {
     const {LF2AbstractSQLPrep: LF2AbstractSQLPrep} = __webpack_require__(118), {LF2AbstractSQL: LF2AbstractSQL} = __webpack_require__(121);
     module.exports = {
@@ -13653,7 +13758,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         this._didSomething = !1;
     };
 }, function(module, exports, __webpack_require__) {
-    var OMeta = __webpack_require__(9), SBVRLibs = __webpack_require__(37).SBVRLibs, LFValidator = exports.LFValidator = SBVRLibs._extend({
+    var OMeta = __webpack_require__(9), SBVRLibs = __webpack_require__(38).SBVRLibs, LFValidator = exports.LFValidator = SBVRLibs._extend({
         trans: function() {
             var $elf = this, _fromIdx = this.input.idx, a, t;
             this._form((function() {
@@ -14600,7 +14705,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
             return binds;
         },
         RoleBinding: function(baseTermName) {
-            var $elf = this, _fromIdx = this.input.idx, baseBind, binding, conceptTypeResolver, data, identifier, number;
+            var $elf = this, _fromIdx = this.input.idx, baseBind, binding, conceptTypeResolver, data, identifier, nativeNameBinding, number;
             this._form((function() {
                 this._applyWithArgs("exactly", "RoleBinding");
                 identifier = this._apply("Identifier");
@@ -14609,14 +14714,17 @@ WHERE "model name" = ${1}`, [ modelName ]);
                 }), (function() {
                     return data = this._apply("Value");
                 }), (function() {
-                    return this._applyWithArgs("NativeNameBinding", baseTermName);
+                    return nativeNameBinding = this._applyWithArgs("NativeNameBinding", baseTermName);
                 }));
             }));
-            baseBind = this.bindAttributes[number];
             binding = this._or((function() {
                 this._pred(data);
                 return data;
             }), (function() {
+                this._pred(nativeNameBinding);
+                return nativeNameBinding;
+            }), (function() {
+                baseBind = this.bindAttributes[number];
                 this._pred(baseBind);
                 return baseBind.binding;
             }), (function() {
@@ -15403,7 +15511,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var callable = __webpack_require__(2), forEach = __webpack_require__(25), extensions = __webpack_require__(7), configure = __webpack_require__(129), resolveLength = __webpack_require__(38);
+    var callable = __webpack_require__(2), forEach = __webpack_require__(25), extensions = __webpack_require__(7), configure = __webpack_require__(129), resolveLength = __webpack_require__(39);
     module.exports = function self(fn) {
         var options, length, conf;
         callable(fn);
@@ -15622,7 +15730,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var isObject = __webpack_require__(40);
+    var isObject = __webpack_require__(41);
     module.exports = function(value) {
         if (!isObject(value)) return !1;
         try {
@@ -15724,7 +15832,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     exports.methods = methods;
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var from = __webpack_require__(22), isArray = Array.isArray;
+    var from = __webpack_require__(21), isArray = Array.isArray;
     module.exports = function(arrayLike) {
         return isArray(arrayLike) ? arrayLike : from(arrayLike);
     };
@@ -15981,7 +16089,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var indexOf = __webpack_require__(41), create = Object.create;
+    var indexOf = __webpack_require__(42), create = Object.create;
     module.exports = function() {
         var lastId = 0, map = [], cache = create(null);
         return {
@@ -16060,7 +16168,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var indexOf = __webpack_require__(41);
+    var indexOf = __webpack_require__(42);
     module.exports = function() {
         var lastId = 0, argsMap = [], cache = [];
         return {
@@ -16088,7 +16196,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var indexOf = __webpack_require__(41), create = Object.create;
+    var indexOf = __webpack_require__(42), create = Object.create;
     module.exports = function(length) {
         var lastId = 0, map = [ [], [] ], cache = create(null);
         return {
@@ -16141,7 +16249,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var aFrom = __webpack_require__(22), objectMap = __webpack_require__(42), mixin = __webpack_require__(53), defineLength = __webpack_require__(27), nextTick = __webpack_require__(43), slice = Array.prototype.slice, apply = Function.prototype.apply, create = Object.create;
+    var aFrom = __webpack_require__(21), objectMap = __webpack_require__(43), mixin = __webpack_require__(53), defineLength = __webpack_require__(27), nextTick = __webpack_require__(44), slice = Array.prototype.slice, apply = Function.prototype.apply, create = Object.create;
     __webpack_require__(7).async = function(tbi, conf) {
         var waiting = create(null), cache = create(null), base = conf.memoized, original = conf.original, currentCallback, currentContext, currentArgs;
         conf.memoized = defineLength((function(arg) {
@@ -16240,7 +16348,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var objectMap = __webpack_require__(42), primitiveSet = __webpack_require__(162), ensureString = __webpack_require__(163), toShortString = __webpack_require__(165), isPromise = __webpack_require__(60), nextTick = __webpack_require__(43), create = Object.create, supportedModes = primitiveSet("then", "then:finally", "done", "done:finally");
+    var objectMap = __webpack_require__(43), primitiveSet = __webpack_require__(162), ensureString = __webpack_require__(163), toShortString = __webpack_require__(165), isPromise = __webpack_require__(60), nextTick = __webpack_require__(44), create = Object.create, supportedModes = primitiveSet("then", "then:finally", "done", "done:finally");
     __webpack_require__(7).promise = function(mode, conf) {
         var waiting = create(null), cache = create(null), promises = create(null);
         if (!0 === mode) mode = null; else {
@@ -16394,7 +16502,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var aFrom = __webpack_require__(22), forEach = __webpack_require__(25), nextTick = __webpack_require__(43), isPromise = __webpack_require__(60), timeout = __webpack_require__(169), extensions = __webpack_require__(7), noop = Function.prototype, max = Math.max, min = Math.min, create = Object.create;
+    var aFrom = __webpack_require__(21), forEach = __webpack_require__(25), nextTick = __webpack_require__(44), isPromise = __webpack_require__(60), timeout = __webpack_require__(169), extensions = __webpack_require__(7), noop = Function.prototype, max = Math.max, min = Math.min, create = Object.create;
     extensions.maxAge = function(maxAge, conf, options) {
         var timeouts, postfix, preFetchAge, preFetchTimeouts;
         if (maxAge = timeout(maxAge)) {
@@ -16559,15 +16667,29 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var crypto = __webpack_require__(48), Charset = __webpack_require__(175);
+    var crypto = __webpack_require__(37), randomBytes = __webpack_require__(175), Charset = __webpack_require__(176);
     function safeRandomBytes(length) {
         for (;;) try {
-            return crypto.randomBytes(length);
+            return randomBytes(length);
         } catch (e) {
             continue;
         }
     }
-    exports.generate = function(options) {
+    function processString(buf, initialString, chars, reqLen, maxByte) {
+        for (var string = initialString, i = 0; i < buf.length && string.length < reqLen; i++) {
+            var randomByte = buf.readUInt8(i);
+            randomByte < maxByte && (string += chars.charAt(randomByte % chars.length));
+        }
+        return string;
+    }
+    function getAsyncString(string, chars, length, maxByte, cb) {
+        crypto.randomBytes(length, (function(err, buf) {
+            err && cb(err);
+            var generatedString = processString(buf, string, chars, length, maxByte);
+            generatedString.length < length ? getAsyncString(generatedString, chars, length, maxByte, cb) : cb(null, generatedString);
+        }));
+    }
+    exports.generate = function(options, cb) {
         var charset = new Charset, length, chars, capitalization, string = "";
         if ("object" == typeof options) {
             length = options.length || 32;
@@ -16582,23 +16704,26 @@ WHERE "model name" = ${1}`, [ modelName ]);
             length = 32;
             charset.setType("alphanumeric");
         }
-        for (var charsLen = charset.chars.length, maxByte = 256 - 256 % charsLen; length > 0; ) for (var buf = safeRandomBytes(Math.ceil(256 * length / maxByte)), i = 0; i < buf.length && length > 0; i++) {
-            var randomByte = buf.readUInt8(i);
-            if (randomByte < maxByte) {
-                string += charset.chars.charAt(randomByte % charsLen);
-                length--;
+        var charsLen, maxByte = 256 - 256 % charset.chars.length;
+        if (!cb) {
+            for (;string.length < length; ) {
+                var buf;
+                string = processString(safeRandomBytes(Math.ceil(256 * length / maxByte)), string, charset.chars, length, maxByte);
             }
+            return string;
         }
-        return string;
+        getAsyncString(string, charset.chars, length, maxByte, cb);
     };
 }, function(module, exports, __webpack_require__) {
-    var arrayUniq = __webpack_require__(176);
+    module.exports = __webpack_require__(37).randomBytes;
+}, function(module, exports, __webpack_require__) {
+    var arrayUniq = __webpack_require__(177);
     function Charset() {
         this.chars = "";
     }
     Charset.prototype.setType = function(type) {
-        var chars, numbers = "0123456789", charsLower = "abcdefghijklmnopqrstuvwxyz", charsUpper = charsLower.toUpperCase(), hexChars = "abcdef";
-        chars = "alphanumeric" === type ? numbers + charsLower + charsUpper : "numeric" === type ? numbers : "alphabetic" === type ? charsLower + charsUpper : "hex" === type ? numbers + "abcdef" : type;
+        var chars, numbers = "0123456789", charsLower = "abcdefghijklmnopqrstuvwxyz", charsUpper = charsLower.toUpperCase(), hexChars = "abcdef", binaryChars = "01", octalChars = "01234567";
+        chars = "alphanumeric" === type ? numbers + charsLower + charsUpper : "numeric" === type ? numbers : "alphabetic" === type ? charsLower + charsUpper : "hex" === type ? numbers + "abcdef" : "binary" === type ? "01" : "octal" === type ? "01234567" : type;
         this.chars = chars;
     };
     Charset.prototype.removeUnreadable = function() {
@@ -16647,35 +16772,32 @@ WHERE "model name" = ${1}`, [ modelName ]);
 }, function(module, exports) {
     module.exports = require("pinejs-client-core");
 }, function(module, exports, __webpack_require__) {
-    var OMeta = __webpack_require__(9), SBVRLibs = __webpack_require__(37).SBVRLibs, _ = __webpack_require__(0);
-    __webpack_require__(179);
-    var SBVRParser = exports.SBVRParser = SBVRLibs._extend({
+    var OMeta = __webpack_require__(9), SBVRLibs = __webpack_require__(38).SBVRLibs, _ = __webpack_require__(0);
+    __webpack_require__(180);
+    var isEOL = function isEOL(x) {
+        return [ "\n", "\r" ].includes(x);
+    }, isSpace = function isSpace(x) {
+        return x.charCodeAt(0) <= 32;
+    }, SBVRParser = exports.SBVRParser = SBVRLibs._extend({
         EOL: function() {
-            var $elf = this, _fromIdx = this.input.idx;
-            return function() {
-                switch (this.anything()) {
-                  case "\n":
-                    return "\n";
-
-                  case "\r":
-                    return this._opt((function() {
-                        return this._applyWithArgs("exactly", "\n");
-                    }));
-
-                  default:
-                    throw this._fail();
-                }
-            }.call(this);
+            var $elf = this, _fromIdx = this.input.idx, x;
+            return this._many1((function() {
+                x = this.anything();
+                return this._pred(isEOL(x));
+            }));
         },
         EOLSpaces: function() {
-            var $elf = this, _fromIdx = this.input.idx, eol;
+            var $elf = this, _fromIdx = this.input.idx, c, eol;
             eol = !1;
             this._many((function() {
                 return this._or((function() {
+                    c = this._idxConsumedBy((function() {
+                        return this._apply("spaces");
+                    }));
+                    return this._pred(c.fromIdx !== c.toIdx);
+                }), (function() {
                     this._apply("EOL");
                     return eol = !0;
-                }), (function() {
-                    return this._apply("space");
                 }));
             }));
             return this._pred(eol);
@@ -16705,12 +16827,14 @@ WHERE "model name" = ${1}`, [ modelName ]);
         },
         spaces: function() {
             var $elf = this, _fromIdx = this.input.idx;
-            return this._many((function() {
-                this._not((function() {
-                    return this._apply("EOL");
-                }));
-                return this._apply("space");
+            this._applyWithArgs("matchUntil", (function(x) {
+                return !isSpace(x) || isEOL(x);
             }));
+            return function() {
+                "-" === this.input.hd && this._opt((function() {
+                    return this._apply("NewComment");
+                }));
+            }.call(this);
         },
         Number: function() {
             var $elf = this, _fromIdx = this.input.idx, n;
@@ -16823,12 +16947,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         toEOL: function() {
             var $elf = this, _fromIdx = this.input.idx;
             return this._consumedBy((function() {
-                return this._many((function() {
-                    this._not((function() {
-                        return this._apply("EOL");
-                    }));
-                    return this.anything();
-                }));
+                return this._applyWithArgs("matchUntil", isEOL);
             }));
         },
         token: function(x) {
@@ -17306,17 +17425,15 @@ WHERE "model name" = ${1}`, [ modelName ]);
             }));
         },
         UpcomingCommaJunction: function() {
-            var $elf = this, _fromIdx = this.input.idx;
+            var $elf = this, _fromIdx = this.input.idx, x;
             return this._lookahead((function() {
                 return this._or((function() {
                     this._many((function() {
                         this._not((function() {
-                            return this._apply("EOL");
-                        }));
-                        this._not((function() {
                             return this._apply("SerialCommaCheck");
                         }));
-                        return this.anything();
+                        x = this.anything();
+                        return this._pred(!isEOL(x));
                     }));
                     this._apply("SerialCommaCheck");
                     return !0;
@@ -17926,6 +18043,11 @@ WHERE "model name" = ${1}`, [ modelName ]);
     SBVRParser.matchForAll = function(rule, arr) {
         for (var idx = 0; idx < arr.length; idx++) this._applyWithArgs.call(this, rule, arr[idx]);
     };
+    SBVRParser.matchUntil = function(fn) {
+        try {
+            for (;!fn(this.input.head()); ) this.input = this.input.tail();
+        } catch (e) {}
+    };
     SBVRParser.exactly = function(wanted) {
         if (wanted.toLowerCase() === this._apply("lowerCaseAnything")) return wanted;
         throw this._fail();
@@ -18048,7 +18170,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         value: !0
     });
     exports.generateODataMetadata = void 0;
-    const sbvrTypes = __webpack_require__(13), {version: version} = __webpack_require__(183), getResourceName = resourceName => resourceName.split("-").map((namePart => namePart.split(" ").join("_"))).join("__"), forEachUniqueTable = (model, callback) => {
+    const sbvrTypes = __webpack_require__(13), {version: version} = __webpack_require__(184), getResourceName = resourceName => resourceName.split("-").map((namePart => namePart.split(" ").join("_"))).join("__"), forEachUniqueTable = (model, callback) => {
         const usedTableNames = {}, result = [];
         for (const key in model) if (model.hasOwnProperty(key)) {
             const table = model[key];
@@ -18095,12 +18217,12 @@ WHERE "model name" = ${1}`, [ modelName ]);
     exports.generateODataMetadata = generateODataMetadata;
     exports.generateODataMetadata.version = version;
 }, function(module) {
-    module.exports = JSON.parse('{"name":"@balena/pinejs","version":"14.18.0","main":"out/server-glue/module","repository":"git@github.com:balena-io/pinejs.git","license":"Apache-2.0","bin":{"abstract-sql-compiler":"./bin/abstract-sql-compiler.js","odata-compiler":"./bin/odata-compiler.js","sbvr-compiler":"./bin/sbvr-compiler.js"},"scripts":{"prepublish":"require-npm4-to-publish","prepublishOnly":"npm run lint","prepare":"npm run build","build":"grunt build","webpack-browser":"grunt browser","webpack-module":"grunt module","webpack-server":"grunt server","webpack-build":"npm run webpack-browser && npm run webpack-module && npm run webpack-server","lint":"balena-lint -e js -e ts --typescript src build typings Gruntfile.ts && npx tsc --project tsconfig.dev.json --noEmit","test":"npm run lint && npm run build && npm run webpack-build","prettify":"balena-lint -e js -e ts --typescript --fix src build typings Gruntfile.ts"},"dependencies":{"@balena/abstract-sql-compiler":"^7.10.1","@balena/abstract-sql-to-typescript":"^1.1.1","@balena/lf-to-abstract-sql":"^4.2.0","@balena/odata-parser":"^2.2.2","@balena/odata-to-abstract-sql":"^5.4.1","@balena/sbvr-parser":"^1.2.2","@balena/sbvr-types":"^3.4.0","@types/bluebird":"^3.5.33","@types/body-parser":"^1.19.0","@types/compression":"^1.7.0","@types/cookie-parser":"^1.4.2","@types/deep-freeze":"^0.1.2","@types/express":"^4.17.11","@types/express-session":"^1.17.3","@types/lodash":"^4.14.168","@types/memoizee":"^0.4.5","@types/method-override":"0.0.31","@types/multer":"^1.4.5","@types/mysql":"^2.15.17","@types/node":"^12.19.16","@types/passport":"^0.4.7","@types/passport-local":"1.0.33","@types/passport-strategy":"^0.2.35","@types/pg":"^7.14.9","@types/randomstring":"^1.1.6","@types/websql":"0.0.27","bluebird":"^3.7.2","commander":"^7.0.0","deep-freeze":"0.0.1","eventemitter3":"^4.0.7","express-session":"^1.17.1","lodash":"^4.17.20","memoizee":"^0.4.15","pinejs-client-core":"^6.9.3","randomstring":"^1.1.5","typed-error":"^3.2.1"},"devDependencies":{"@balena/lint":"^5.4.1","@types/grunt":"^0.4.24","@types/terser-webpack-plugin":"^4.2.0","@types/webpack":"^4.41.26","grunt":"^1.3.0","grunt-check-dependencies":"^1.0.0","grunt-cli":"^1.3.2","grunt-contrib-clean":"^2.0.0","grunt-contrib-concat":"^1.0.1","grunt-contrib-copy":"^1.0.0","grunt-contrib-rename":"^0.2.0","grunt-gitinfo":"^0.1.9","grunt-text-replace":"^0.4.0","grunt-ts":"^6.0.0-beta.22","grunt-webpack":"^4.0.2","husky":"^4.3.8","lint-staged":"^10.5.4","load-grunt-tasks":"^5.1.0","raw-loader":"^4.0.2","require-npm4-to-publish":"^1.0.0","terser-webpack-plugin":"^4.2.3","ts-loader":"^8.0.16","ts-node":"^9.1.1","typescript":"^4.1.3","webpack":"^4.46.0","webpack-dev-server":"^3.11.2"},"optionalDependencies":{"bcrypt":"^5.0.0","body-parser":"^1.19.0","compression":"^1.7.4","cookie-parser":"^1.4.5","express":"^4.17.1","method-override":"^3.0.0","multer":"^1.4.2","mysql":"^2.18.1","passport":"^0.3.2","passport-local":"^1.0.0","pg":"^8.5.1","pg-connection-string":"^2.4.0","serve-static":"^1.14.1"},"engines":{"node":">=10.0.0","npm":">=6.0.0"},"husky":{"hooks":{"pre-commit":"lint-staged"}},"lint-staged":{"*.js":["balena-lint --typescript --fix"],"*.ts":["balena-lint --typescript --fix"]}}');
+    module.exports = JSON.parse('{"name":"@balena/pinejs","version":"14.24.1","main":"out/server-glue/module","repository":"git@github.com:balena-io/pinejs.git","license":"Apache-2.0","bin":{"abstract-sql-compiler":"./bin/abstract-sql-compiler.js","odata-compiler":"./bin/odata-compiler.js","sbvr-compiler":"./bin/sbvr-compiler.js"},"scripts":{"prepublish":"require-npm4-to-publish","prepublishOnly":"npm run lint","prepare":"npm run build","build":"grunt build","webpack-browser":"grunt browser","webpack-module":"grunt module","webpack-server":"grunt server","webpack-build":"npm run webpack-browser && npm run webpack-module && npm run webpack-server","lint":"balena-lint -e js -e ts src build typings Gruntfile.ts && npx tsc --project tsconfig.dev.json --noEmit","test":"npm run lint && npm run build && npm run webpack-build","prettify":"balena-lint -e js -e ts --fix src build typings Gruntfile.ts"},"dependencies":{"@balena/abstract-sql-compiler":"^7.13.0","@balena/abstract-sql-to-typescript":"^1.1.1","@balena/lf-to-abstract-sql":"^4.2.1","@balena/odata-parser":"^2.2.4","@balena/odata-to-abstract-sql":"^5.4.1","@balena/sbvr-parser":"^1.2.4","@balena/sbvr-types":"^3.4.3","@types/bluebird":"^3.5.35","@types/body-parser":"^1.19.0","@types/compression":"^1.7.0","@types/cookie-parser":"^1.4.2","@types/deep-freeze":"^0.1.2","@types/express":"^4.17.12","@types/express-session":"^1.17.3","@types/lodash":"^4.14.170","@types/memoizee":"^0.4.5","@types/method-override":"0.0.31","@types/multer":"^1.4.5","@types/mysql":"^2.15.18","@types/node":"^12.20.14","@types/passport":"^0.4.7","@types/passport-local":"1.0.33","@types/passport-strategy":"^0.2.35","@types/pg":"^8.6.0","@types/randomstring":"^1.1.6","@types/websql":"0.0.27","bluebird":"^3.7.2","commander":"^7.2.0","deep-freeze":"0.0.1","eventemitter3":"^4.0.7","express-session":"^1.17.2","lodash":"^4.17.21","memoizee":"^0.4.15","pinejs-client-core":"^6.9.5","randomstring":"^1.2.1","typed-error":"^3.2.1"},"devDependencies":{"@balena/lint":"^6.1.1","@types/grunt":"^0.4.24","@types/terser-webpack-plugin":"^4.2.1","@types/webpack":"^4.41.29","grunt":"^1.4.1","grunt-check-dependencies":"^1.0.0","grunt-cli":"^1.4.3","grunt-contrib-clean":"^2.0.0","grunt-contrib-concat":"^1.0.1","grunt-contrib-copy":"^1.0.0","grunt-contrib-rename":"^0.2.0","grunt-gitinfo":"^0.1.9","grunt-text-replace":"^0.4.0","grunt-ts":"^6.0.0-beta.22","grunt-webpack":"^4.0.3","husky":"^4.3.8","lint-staged":"^11.0.0","load-grunt-tasks":"^5.1.0","raw-loader":"^4.0.2","require-npm4-to-publish":"^1.0.0","terser-webpack-plugin":"^4.2.3","ts-loader":"^8.3.0","ts-node":"^10.0.0","typescript":"^4.3.2","webpack":"^4.46.0","webpack-dev-server":"^3.11.2"},"optionalDependencies":{"bcrypt":"^5.0.1","body-parser":"^1.19.0","compression":"^1.7.4","cookie-parser":"^1.4.5","express":"^4.17.1","method-override":"^3.0.0","multer":"^1.4.2","mysql":"^2.18.1","passport":"^0.3.2","passport-local":"^1.0.0","pg":"^8.6.0","pg-connection-string":"^2.5.0","serve-static":"^1.14.1"},"engines":{"node":">=10.0.0","npm":">=6.0.0"},"husky":{"hooks":{"pre-commit":"lint-staged"}},"lint-staged":{"*.js":["balena-lint --fix"],"*.ts":["balena-lint --fix"]}}');
 }, function(module, exports) {
     module.exports = "Vocabulary: dev\r\n\r\nTerm:       model value\r\n\tConcept Type: JSON (Type)\r\nTerm:       model\r\n\tReference Scheme: model value\r\nTerm:       vocabulary\r\n\tConcept Type: Short Text (Type)\r\nTerm:       model type\r\n\tConcept Type: Short Text (Type)\r\n\r\nFact Type: model is of vocabulary\r\n\tNecessity: Each model is of exactly one vocabulary\r\nFact Type: model has model type\r\n\tNecessity: Each model has exactly one model type\r\nFact Type: model has model value\r\n\tNecessity: Each model has exactly one model value\r\n";
-}, function(module, exports, __webpack_require__) {
+}, function(module, exports, __webpack_require__) {}, function(module, exports, __webpack_require__) {
     "use strict";
-    var customError = __webpack_require__(52), defineLength = __webpack_require__(27), partial = __webpack_require__(186), copy = __webpack_require__(68), normalizeOpts = __webpack_require__(24), callable = __webpack_require__(2), d = __webpack_require__(3), WeakMap = __webpack_require__(187), resolveLength = __webpack_require__(38), extensions = __webpack_require__(7), resolveResolve = __webpack_require__(56), resolveNormalize = __webpack_require__(58), slice = Array.prototype.slice, defineProperties = Object.defineProperties;
+    var customError = __webpack_require__(52), defineLength = __webpack_require__(27), partial = __webpack_require__(188), copy = __webpack_require__(68), normalizeOpts = __webpack_require__(24), callable = __webpack_require__(2), d = __webpack_require__(3), WeakMap = __webpack_require__(189), resolveLength = __webpack_require__(39), extensions = __webpack_require__(7), resolveResolve = __webpack_require__(56), resolveNormalize = __webpack_require__(58), slice = Array.prototype.slice, defineProperties = Object.defineProperties;
     module.exports = function(memoize) {
         return function(fn) {
             var map, length, options = normalizeOpts(arguments[1]), memoized, resolve, normalizer;
@@ -18166,7 +18288,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var callable = __webpack_require__(2), aFrom = __webpack_require__(22), defineLength = __webpack_require__(27), apply = Function.prototype.apply;
+    var callable = __webpack_require__(2), aFrom = __webpack_require__(21), defineLength = __webpack_require__(27), apply = Function.prototype.apply;
     module.exports = function() {
         var fn = callable(this), args = aFrom(arguments);
         return defineLength((function() {
@@ -18175,7 +18297,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    module.exports = __webpack_require__(188)() ? WeakMap : __webpack_require__(189);
+    module.exports = __webpack_require__(190)() ? WeakMap : __webpack_require__(191);
 }, function(module, exports, __webpack_require__) {
     "use strict";
     module.exports = function() {
@@ -18190,7 +18312,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var isValue = __webpack_require__(6), setPrototypeOf = __webpack_require__(45), object = __webpack_require__(191), ensureValue = __webpack_require__(4), randomUniq = __webpack_require__(192), d = __webpack_require__(3), getIterator = __webpack_require__(71), forOf = __webpack_require__(204), toStringTagSymbol = __webpack_require__(11).toStringTag, isNative = __webpack_require__(205), isArray = Array.isArray, defineProperty = Object.defineProperty, objHasOwnProperty = Object.prototype.hasOwnProperty, getPrototypeOf = Object.getPrototypeOf, WeakMapPoly;
+    var isValue = __webpack_require__(6), setPrototypeOf = __webpack_require__(46), object = __webpack_require__(193), ensureValue = __webpack_require__(4), randomUniq = __webpack_require__(194), d = __webpack_require__(3), getIterator = __webpack_require__(71), forOf = __webpack_require__(206), toStringTagSymbol = __webpack_require__(11).toStringTag, isNative = __webpack_require__(207), isArray = Array.isArray, defineProperty = Object.defineProperty, objHasOwnProperty = Object.prototype.hasOwnProperty, getPrototypeOf = Object.getPrototypeOf, WeakMapPoly;
     module.exports = WeakMapPoly = function() {
         var iterable = arguments[0], self;
         if (!(this instanceof WeakMapPoly)) throw new TypeError("Constructor requires 'new'");
@@ -18270,7 +18392,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     }();
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var isObject = __webpack_require__(39);
+    var isObject = __webpack_require__(40);
     module.exports = function(value) {
         if (!isObject(value)) throw new TypeError(value + " is not an Object");
         return value;
@@ -18287,7 +18409,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var setPrototypeOf = __webpack_require__(45), contains = __webpack_require__(55), d = __webpack_require__(3), Symbol = __webpack_require__(11), Iterator = __webpack_require__(72), defineProperty = Object.defineProperty, ArrayIterator;
+    var setPrototypeOf = __webpack_require__(46), contains = __webpack_require__(55), d = __webpack_require__(3), Symbol = __webpack_require__(11), Iterator = __webpack_require__(72), defineProperty = Object.defineProperty, ArrayIterator;
     ArrayIterator = module.exports = function(arr, kind) {
         if (!(this instanceof ArrayIterator)) throw new TypeError("Constructor requires 'new'");
         Iterator.call(this, arr);
@@ -18311,7 +18433,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var isValue = __webpack_require__(18), ensureValue = __webpack_require__(196), ensurePlainFunction = __webpack_require__(200), copy = __webpack_require__(68), normalizeOptions = __webpack_require__(24), map = __webpack_require__(42), bind = Function.prototype.bind, defineProperty = Object.defineProperty, hasOwnProperty = Object.prototype.hasOwnProperty, define;
+    var isValue = __webpack_require__(18), ensureValue = __webpack_require__(198), ensurePlainFunction = __webpack_require__(202), copy = __webpack_require__(68), normalizeOptions = __webpack_require__(24), map = __webpack_require__(43), bind = Function.prototype.bind, defineProperty = Object.defineProperty, hasOwnProperty = Object.prototype.hasOwnProperty, define;
     define = function(name, desc, options) {
         var value = ensureValue(desc) && ensurePlainFunction(desc.value), dgs;
         delete (dgs = copy(desc)).writable;
@@ -18339,7 +18461,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var isValue = __webpack_require__(18), isObject = __webpack_require__(40), objectToString = Object.prototype.toString;
+    var isValue = __webpack_require__(18), isObject = __webpack_require__(41), objectToString = Object.prototype.toString;
     module.exports = function(value) {
         if (!isValue(value)) return null;
         if (isObject(value)) {
@@ -18355,7 +18477,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var safeToString = __webpack_require__(199), reNewLine = /[\n\r\u2028\u2029]/g;
+    var safeToString = __webpack_require__(201), reNewLine = /[\n\r\u2028\u2029]/g;
     module.exports = function(value) {
         var string = safeToString(value);
         if (null === string) return "<Non-coercible to string value>";
@@ -18400,7 +18522,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var setPrototypeOf = __webpack_require__(45), d = __webpack_require__(3), Symbol = __webpack_require__(11), Iterator = __webpack_require__(72), defineProperty = Object.defineProperty, StringIterator;
+    var setPrototypeOf = __webpack_require__(46), d = __webpack_require__(3), Symbol = __webpack_require__(11), Iterator = __webpack_require__(72), defineProperty = Object.defineProperty, StringIterator;
     StringIterator = module.exports = function(str) {
         if (!(this instanceof StringIterator)) throw new TypeError("Constructor requires 'new'");
         str = String(str);
@@ -18424,7 +18546,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
     defineProperty(StringIterator.prototype, Symbol.toStringTag, d("c", "String Iterator"));
 }, function(module, exports, __webpack_require__) {
     "use strict";
-    var isIterable = __webpack_require__(203);
+    var isIterable = __webpack_require__(205);
     module.exports = function(value) {
         if (!isIterable(value)) throw new TypeError(value + " is not iterable");
         return value;
@@ -18471,9 +18593,9 @@ WHERE "model name" = ${1}`, [ modelName ]);
 }, function(module, exports) {
     module.exports = "Vocabulary: Auth\r\n\r\nTerm:       username\r\n\tConcept Type: Short Text (Type)\r\nTerm:       password\r\n\tConcept Type: Hashed (Type)\r\nTerm:       name\r\n\tConcept Type: Text (Type)\r\nTerm:       key\r\n\tConcept Type: Short Text (Type)\r\nTerm:       expiry date\r\n\tConcept Type: Date Time (Type)\r\nTerm:       description\r\n\tConcept Type: Text (Type)\r\n\r\nTerm:       permission\r\n\tReference Scheme: name\r\nFact type:  permission has name\r\n\tNecessity: Each permission has exactly one name.\r\n\tNecessity: Each name is of exactly one permission.\r\n\r\nTerm:       role\r\n\tReference Scheme: name\r\nFact type:  role has name\r\n\tNecessity: Each role has exactly one name.\r\n\tNecessity: Each name is of exactly one role.\r\nFact type:  role has permission\r\n\r\nTerm:       actor\r\n\r\nTerm:       user\r\n\tReference Scheme: username\r\n\tConcept Type: actor\r\nFact type:  user has username\r\n\tNecessity: Each user has exactly one username.\r\n\tNecessity: Each username is of exactly one user.\r\nFact type:  user has password\r\n\tNecessity: Each user has exactly one password.\r\nFact type:  user has role\r\n\tNote: A 'user' will inherit all the 'permissions' that the 'role' has.\r\n\tTerm Form: user role\r\n\tFact type: user role has expiry date\r\n\t\tNecessity: Each user role has at most one expiry date.\r\nFact type:  user has permission\r\n\tTerm Form: user permission\r\n\tFact type: user permission has expiry date\r\n\t\tNecessity: Each user permission has at most one expiry date.\r\n\r\nTerm:       api key\r\n\tReference Scheme: key\r\nFact type:  api key has key\r\n\tNecessity: each api key has exactly one key\r\n\tNecessity: each key is of exactly one api key\r\nFact type:  api key has role\r\n\tNote: An 'api key' will inherit all the 'permissions' that the 'role' has.\r\nFact type:  api key has permission\r\nFact type:  api key is of actor\r\n\tNecessity: each api key is of exactly one actor\r\nFact type:  api key has name\r\n\tNecessity: Each api key has at most one name.\r\nFact type:  api key has description\r\n\tNecessity: Each api key has at most one description.\r\n";
 }, function(module) {
-    module.exports = JSON.parse('{"_from":"@balena/lf-to-abstract-sql@4.2.0","_id":"@balena/lf-to-abstract-sql@4.2.0","_inBundle":false,"_integrity":"sha512-0MHl3Af3d9uX2LWXYATEFLHOVLLtU23w4G2jl09vEplgTXCZKnp7L6aPSs/iBNbxZBfg2V9gExmzo21bRc/T6g==","_location":"/@balena/lf-to-abstract-sql","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"@balena/lf-to-abstract-sql@4.2.0","name":"@balena/lf-to-abstract-sql","escapedName":"@balena%2flf-to-abstract-sql","scope":"@balena","rawSpec":"4.2.0","saveSpec":null,"fetchSpec":"4.2.0"},"_requiredBy":["#USER","/"],"_resolved":"https://registry.npmjs.org/@balena/lf-to-abstract-sql/-/lf-to-abstract-sql-4.2.0.tgz","_shasum":"e77990d4a5ca8c2a0e2f49dfc9a91de6f8af38a6","_spec":"@balena/lf-to-abstract-sql@4.2.0","_where":"C:\\\\Users\\\\pjgaz\\\\Documents\\\\Development\\\\pinejs\\\\pinejs","author":"","bugs":{"url":"https://github.com/balena-io-modules/lf-to-abstract-sql/issues"},"bundleDependencies":false,"dependencies":{"@balena/sbvr-parser":"^1.2.0","lodash":"^4.17.20","ometa-js":"^1.5.3"},"deprecated":false,"description":"LF to Abstract SQL translator.","devDependencies":{"@balena/lint":"^5.4.0","@balena/sbvr-types":"^3.2.0","chai":"^4.3.0","mocha":"^8.2.1","require-npm4-to-publish":"^1.0.0"},"homepage":"https://github.com/balena-io-modules/lf-to-abstract-sql#readme","license":"BSD","main":"index.js","mocha":{"reporter":"spec","recursive":true,"bail":true,"timeout":5000,"_":"test/**/*.js"},"name":"@balena/lf-to-abstract-sql","repository":{"type":"git","url":"git+https://github.com/balena-io-modules/lf-to-abstract-sql.git"},"scripts":{"lint":"balena-lint --typescript -e js test index.js","lint-fix":"balena-lint --typescript --fix -e js test index.js","posttest":"npm run lint","prepare":"ometajs2js --commonjs --input lf-to-abstract-sql.ometajs --output lf-to-abstract-sql.js && ometajs2js --commonjs --input lf-to-abstract-sql-prep.ometajs --output lf-to-abstract-sql-prep.js && ometajs2js --commonjs --input sbvr-compiler-libs.ometajs --output sbvr-compiler-libs.js","prepublish":"require-npm4-to-publish","pretest":"npm run prepare","test":"mocha"},"version":"4.2.0"}');
+    module.exports = JSON.parse('{"_from":"@balena/lf-to-abstract-sql@4.2.1","_id":"@balena/lf-to-abstract-sql@4.2.1","_inBundle":false,"_integrity":"sha512-OTNhqLfyixxLJTqmTmffki/8R5QLa50eFs40MKVYxGXs87o1CWso2P0KnHGhWAPN/c6IbL94nUy+1K4MNCbwvQ==","_location":"/@balena/lf-to-abstract-sql","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"@balena/lf-to-abstract-sql@4.2.1","name":"@balena/lf-to-abstract-sql","escapedName":"@balena%2flf-to-abstract-sql","scope":"@balena","rawSpec":"4.2.1","saveSpec":null,"fetchSpec":"4.2.1"},"_requiredBy":["#USER","/"],"_resolved":"https://registry.npmjs.org/@balena/lf-to-abstract-sql/-/lf-to-abstract-sql-4.2.1.tgz","_shasum":"e886ce8295c31ab77dd4b6562293af8593aeeb3f","_spec":"@balena/lf-to-abstract-sql@4.2.1","_where":"C:\\\\Users\\\\pjgaz\\\\Documents\\\\Development\\\\pinejs\\\\pinejs","author":"","bugs":{"url":"https://github.com/balena-io-modules/lf-to-abstract-sql/issues"},"bundleDependencies":false,"dependencies":{"@balena/sbvr-parser":"^1.2.0","lodash":"^4.17.20","ometa-js":"^1.5.3"},"deprecated":false,"description":"LF to Abstract SQL translator.","devDependencies":{"@balena/lint":"^5.4.0","@balena/sbvr-types":"^3.2.0","chai":"^4.3.0","mocha":"^8.2.1","require-npm4-to-publish":"^1.0.0"},"homepage":"https://github.com/balena-io-modules/lf-to-abstract-sql#readme","license":"BSD","main":"index.js","mocha":{"reporter":"spec","recursive":true,"bail":true,"timeout":5000,"_":"test/**/*.js"},"name":"@balena/lf-to-abstract-sql","repository":{"type":"git","url":"git+https://github.com/balena-io-modules/lf-to-abstract-sql.git"},"scripts":{"lint":"balena-lint --typescript -e js test index.js","lint-fix":"balena-lint --typescript --fix -e js test index.js","posttest":"npm run lint","prepare":"ometajs2js --commonjs --input lf-to-abstract-sql.ometajs --output lf-to-abstract-sql.js && ometajs2js --commonjs --input lf-to-abstract-sql-prep.ometajs --output lf-to-abstract-sql-prep.js && ometajs2js --commonjs --input sbvr-compiler-libs.ometajs --output sbvr-compiler-libs.js","prepublish":"require-npm4-to-publish","pretest":"npm run prepare","test":"mocha"},"version":"4.2.1"}');
 }, function(module) {
-    module.exports = JSON.parse('{"_from":"@balena/sbvr-types@3.4.0","_id":"@balena/sbvr-types@3.4.0","_inBundle":false,"_integrity":"sha512-aQrHeh6MsO/1uPbyBOdb1e2kRdFROpcqnZAk/c69v1vOxQraYNEW8KGdz1bbFpxyYv5A2HsBdTOsutij74C5QA==","_location":"/@balena/sbvr-types","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"@balena/sbvr-types@3.4.0","name":"@balena/sbvr-types","escapedName":"@balena%2fsbvr-types","scope":"@balena","rawSpec":"3.4.0","saveSpec":null,"fetchSpec":"3.4.0"},"_requiredBy":["#USER","/","/@balena/abstract-sql-compiler","/@balena/abstract-sql-to-typescript/@balena/abstract-sql-compiler","/@balena/odata-to-abstract-sql/@balena/abstract-sql-compiler"],"_resolved":"https://registry.npmjs.org/@balena/sbvr-types/-/sbvr-types-3.4.0.tgz","_shasum":"69efb10a680c3044e729771f72fd2a6aa6a407b7","_spec":"@balena/sbvr-types@3.4.0","_where":"C:\\\\Users\\\\pjgaz\\\\Documents\\\\Development\\\\pinejs\\\\pinejs","author":"","bugs":{"url":"https://github.com/balena-io-modules/sbvr-types/issues"},"bundleDependencies":false,"dependencies":{"@types/bcrypt":"^3.0.0","@types/sha.js":"^2.4.0","bcrypt":"^5.0.0","bcryptjs":"^2.4.3","sha.js":"^2.4.11"},"deprecated":false,"description":"SBVR type definitions.","devDependencies":{"@balena/lint":"^5.4.1","@types/lodash":"^4.14.168","bluebird":"^3.7.2","chai":"^4.3.0","chai-as-promised":"^7.1.1","chai-datetime":"^1.7.0","coffeescript":"^2.5.1","husky":"^4.3.8","lint-staged":"^10.5.4","lodash":"^4.17.20","mocha":"^8.2.1","require-npm4-to-publish":"^1.0.0","typescript":"^4.1.3"},"homepage":"https://github.com/balena-io-modules/sbvr-types#readme","husky":{"hooks":{"pre-commit":"lint-staged"}},"license":"BSD","lint-staged":{"*.ts":["balena-lint --typescript --fix"],"*.coffee":["balena-lint"]},"main":"out","mocha":{"reporter":"spec","recursive":true,"require":"coffeescript/register","_":"test/**/*.coffee"},"name":"@balena/sbvr-types","optionalDependencies":{"bcrypt":"^5.0.0","bcryptjs":"^2.4.3","sha.js":"^2.4.11"},"repository":{"type":"git","url":"git+https://github.com/balena-io-modules/sbvr-types.git"},"scripts":{"lint":"balena-lint test && balena-lint --typescript src","prepare":"tsc","prepublish":"require-npm4-to-publish","pretest":"npm run lint && npm run prepare","prettify":"balena-lint --typescript --fix src","test":"mocha"},"version":"3.4.0"}');
+    module.exports = JSON.parse('{"_from":"@balena/sbvr-types@3.4.3","_id":"@balena/sbvr-types@3.4.3","_inBundle":false,"_integrity":"sha512-nSMLO+nuZmB94sWnazqdZeiX3q/IWwde7vkoDLPGpy71mkCvfxfKjzI4jFUxNBF4kD7LGr6Sjc8o8AlmpcEdDw==","_location":"/@balena/sbvr-types","_phantomChildren":{"@types/node":"12.20.5"},"_requested":{"type":"version","registry":true,"raw":"@balena/sbvr-types@3.4.3","name":"@balena/sbvr-types","escapedName":"@balena%2fsbvr-types","scope":"@balena","rawSpec":"3.4.3","saveSpec":null,"fetchSpec":"3.4.3"},"_requiredBy":["#USER","/","/@balena/abstract-sql-compiler"],"_resolved":"https://registry.npmjs.org/@balena/sbvr-types/-/sbvr-types-3.4.3.tgz","_shasum":"b5df81e2f1853d150b414cb9e7214939a276e29b","_spec":"@balena/sbvr-types@3.4.3","_where":"C:\\\\Users\\\\pjgaz\\\\Documents\\\\Development\\\\pinejs\\\\pinejs","author":"","bugs":{"url":"https://github.com/balena-io-modules/sbvr-types/issues"},"bundleDependencies":false,"dependencies":{"@types/bcrypt":"^5.0.0","@types/sha.js":"^2.4.0","bcrypt":"^5.0.1","bcryptjs":"^2.4.3","sha.js":"^2.4.11"},"deprecated":false,"description":"SBVR type definitions.","devDependencies":{"@balena/lint":"^5.4.1","@types/lodash":"^4.14.168","bluebird":"^3.7.2","chai":"^4.3.4","chai-as-promised":"^7.1.1","chai-datetime":"^1.8.0","coffeescript":"^2.5.1","husky":"^4.3.8","lint-staged":"^10.5.4","lodash":"^4.17.21","mocha":"^8.4.0","require-npm4-to-publish":"^1.0.0","typescript":"^4.2.3"},"homepage":"https://github.com/balena-io-modules/sbvr-types#readme","husky":{"hooks":{"pre-commit":"lint-staged"}},"license":"BSD","lint-staged":{"*.ts":["balena-lint --typescript --fix"],"*.coffee":["balena-lint"]},"main":"out","mocha":{"reporter":"spec","recursive":true,"require":"coffeescript/register","_":"test/**/*.coffee"},"name":"@balena/sbvr-types","optionalDependencies":{"bcrypt":"^5.0.1","bcryptjs":"^2.4.3","sha.js":"^2.4.11"},"repository":{"type":"git","url":"git+https://github.com/balena-io-modules/sbvr-types.git"},"scripts":{"lint":"balena-lint test && balena-lint --typescript src","prepare":"tsc","prepublish":"require-npm4-to-publish","pretest":"npm run lint && npm run prepare","prettify":"balena-lint --typescript --fix src","test":"mocha"},"version":"3.4.3"}');
 }, function(module, exports, __webpack_require__) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
@@ -18576,14 +18698,14 @@ WHERE "model name" = ${1}`, [ modelName ]);
     };
     webpackEmptyContext.resolve = webpackEmptyContext;
     module.exports = webpackEmptyContext;
-    webpackEmptyContext.id = 210;
+    webpackEmptyContext.id = 212;
 }, function(module, exports, __webpack_require__) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
         value: !0
     });
     exports.PinejsSessionStore = exports.Store = void 0;
-    const express_session_1 = __webpack_require__(212);
+    const express_session_1 = __webpack_require__(214);
     Object.defineProperty(exports, "Store", {
         enumerable: !0,
         get: function() {
@@ -18987,7 +19109,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
         value: !0
     });
     exports.setup = exports.addModelHooks = exports.config = void 0;
-    const odata_to_abstract_sql_1 = __webpack_require__(16), transactionModel = __webpack_require__(216);
+    const odata_to_abstract_sql_1 = __webpack_require__(16), transactionModel = __webpack_require__(218);
     exports.config = {
         models: [ {
             apiRoot: "transaction",
@@ -19159,7 +19281,7 @@ WHERE "model name" = ${1}`, [ modelName ]);
                 fn(err, user, req, res, next);
             }));
             exports.logout = (req, _res, next) => {
-                req.user = null;
+                delete req.user;
                 loggedIn = !1;
                 loggedInUser = null;
                 next();
@@ -19305,4 +19427,4 @@ WHERE "model name" = ${1}`, [ modelName ]);
     }(), express = () => app;
     module.exports = express;
 } ]));
-//# sourceMappingURL=pine.js.map
+//# sourceMappingURL=pine-browser-v14.24.1-0-ge7e01375.js.map
